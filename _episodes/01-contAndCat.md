@@ -4,6 +4,10 @@
 source: Rmd
 title: "Linear regression with one continuous and one categorical explanatory variable"
 objectives:
+  - Explore the relationship between a continuous dependent variable and two explanatory variables, one continuous and one categorical, using ggplot2. 
+  - Fit a linear regression model with one continuous and one categorical explanatory variable using lm(). 
+  - Use the jtools package to interpret the model output. 
+  - Use the jtools and ggplot2 packages to visualise the model output.
 keypoints:
 questions:
 teaching: 10
