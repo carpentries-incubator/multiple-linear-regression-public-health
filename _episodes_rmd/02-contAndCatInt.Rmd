@@ -1,7 +1,11 @@
 ---
 source: Rmd
-title: "Linear regression with one continuous and one categorical explanatory variable"
+title: "Linear regression including an interaction between one continuous and one categorical explanatory variable"
 objectives:
+  - Recognise from an exploratory plot when an interaction between a continuous and a categorical explanatory variable is appropriate. 
+  - Fit a linear regression model including an interaction between one continuous and one categorical explanatory variable using lm().
+  - Use the jtools package to interpret the model output. 
+  - Use the jtools and ggplot2 packages to visualise the model output.
 keypoints:
 questions:
 teaching: 10
@@ -11,6 +15,6 @@ execises: 10
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
 source("../bin/obtain_data.R")
-knitr_fig_path("01-")
+knitr_fig_path("02-")
 ```
 
