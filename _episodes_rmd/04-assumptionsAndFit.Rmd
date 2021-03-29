@@ -1,9 +1,7 @@
 ---
 source: Rmd
-title: "Assessing multiple linear regression model fit and assumptions"
+title: "Linear regression with one continuous and one categorical explanatory variable"
 objectives:
-  - Use the adjusted R squared value as a measure of model fit.
-  - Assess whether the assumptions of the multiple linear regression model have been violated.
 keypoints:
 questions:
 teaching: 10
@@ -13,6 +11,6 @@ execises: 10
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
 source("../bin/obtain_data.R")
-knitr_fig_path("04-")
+knitr_fig_path("01-")
 ```
 
