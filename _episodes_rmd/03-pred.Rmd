@@ -1,0 +1,18 @@
+---
+source: Rmd
+title: "Making predictions from a multiple linear regression model"
+objectives:
+  - Calculate a prediction from a simple linear regression model using parameter estimates given by the model output.
+  - Use the predict function to generate predictions from a multiple linear regression model.
+keypoints:
+questions:
+teaching: 10
+execises: 10
+---
+
+```{r, include=FALSE}
+source("../bin/chunk-options.R")
+source("../bin/obtain_data.R")
+knitr_fig_path("03-")
+```
+
