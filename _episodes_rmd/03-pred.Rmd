@@ -1,0 +1,16 @@
+---
+source: Rmd
+title: "Linear regression with one continuous and one categorical explanatory variable"
+objectives:
+keypoints:
+questions:
+teaching: 10
+execises: 10
+---
+
+```{r, include=FALSE}
+source("../bin/chunk-options.R")
+source("../bin/obtain_data.R")
+knitr_fig_path("01-")
+```
+
