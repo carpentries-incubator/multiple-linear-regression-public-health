@@ -16,3 +16,22 @@ execises: 10
 
 
 
+
+~~~
+dat %>%
+  filter(Age > 17) %>%
+  ggplot(aes(x = BMI, y = Weight, colour = Gender)) +
+  geom_point()
+~~~
+{: .language-r}
+
+
+
+~~~
+Warning: Removed 320 rows containing missing values (geom_point).
+~~~
+{: .warning}
+
+<img src="../fig/rmd-01-BMI_Weight_Gender-1.png" title="plot of chunk BMI_Weight_Gender" alt="plot of chunk BMI_Weight_Gender" width="612" style="display: block; margin: auto;" />
+
+
