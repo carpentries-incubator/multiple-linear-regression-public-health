@@ -16,5 +16,31 @@ execises: 10
 source("../bin/chunk-options.R")
 source("../bin/obtain_data.R")
 knitr_fig_path("01-")
+
+library(dplyr)
+library(ggplot2)
 ```
 
+```{r BMI_Weight_Gender}
+dat %>%
+  filter(Age > 17) %>%
+  ggplot(aes(x = BMI, y = Weight, colour = Gender)) +
+  geom_point()
+```
+
+```{r scatterplots, include = FALSE}
+dat %>%
+  filter(Age > 17) %>%
+  filter(Race1 %in% c("Black", "Hispanic")) %>%
+  #drop_na(PhysActive) %>%
+  ggplot(aes(x = Height, y = Weight, colour = Race1)) +
+  geom_point() +
+  facet_wrap(~ Race1) +
+  geom_smooth( method = "lm")
+
+
+dat %>%
+  ggplot(aes(x = Weight, y = Pulse)) +
+  facet_wrap(~ Work) +
+  geom_point()
+```
