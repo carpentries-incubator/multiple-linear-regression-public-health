@@ -28,9 +28,9 @@ dat %>%
 
 
 ~~~
-Warning: Removed 320 rows containing missing values (geom_point).
+Error in FUN(X[[i]], ...): object 'Gender' not found
 ~~~
-{: .warning}
+{: .error}
 
 <img src="../fig/rmd-01-BMI_Weight_Gender-1.png" title="plot of chunk BMI_Weight_Gender" alt="plot of chunk BMI_Weight_Gender" width="612" style="display: block; margin: auto;" />
 
