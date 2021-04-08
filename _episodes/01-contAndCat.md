@@ -16,22 +16,195 @@ execises: 10
 
 
 
+In this episode we will learn to fit a linear regression model when we have two explanatory variables: one continuous and one categorical. Before we fit the model, we can explore the relationship between our variables graphically. We are asking the question: does the relationship between the continuous explanatory variable and the response variable differ between the levels of the categorical variable?
+
+Let us take response variable `BMI`, the continuous explanatory variable `Weight` and the categorical explanatory variable `Sex` as an example. The code below subsets our data for individuals who are older than 17 years with `filter()`. The plotting is then initiated using `ggplot()`. Inside `aes()`, we select the response variable with `y = BMI`, the continuous explanatory variable with `x = Weight` and the categorical explanatory variable with `colour = Sex`. As a consequence of the final argument, the points produced by `geom_point()` are coloured by `Sex`. Finally, we include opacity using `alpha = 0.4`, which allows us to distinguish areas dense in points from sparser areas. Note that RStudio returns the error "Removed 320 rows containing missing values (geom_point)." - this reflects that 320 participants had missing BMI and/or Weight data. 
+
+The plot suggests that on average, participants of the female sex have a higher `BMI` than participants of the male sex, for any particular value of `Weight`. We might therefore want to account for this in our model by having *separate intercepts* for the levels of `Sex`.
+
 
 ~~~
 dat %>%
   filter(Age > 17) %>%
-  ggplot(aes(x = BMI, y = Weight, colour = Gender)) +
-  geom_point()
+  ggplot(aes(x = Weight, y = BMI, colour = Sex)) +
+  geom_point(alpha = 0.4) 
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-01-BMI_Weight_Sex exploratory plot-1.png" title="plot of chunk BMI_Weight_Sex exploratory plot" alt="plot of chunk BMI_Weight_Sex exploratory plot" width="612" style="display: block; margin: auto;" />
+
+> ## Exercise  
+> You have been asked to model the relationship between `Height`
+> and `Weight` in the NHANES data, using data from participants
+> with a `Black` or `Mexican` race. Use the ggplot2
+> package to create an exploratory plot, ensuring that:
+> 1. The data is filtered for participants over the age of 17, with a 
+> Black or Mexican race. Race is described by the `Race1` variable.  
+> 2. Weight (`Weight`) on the y-axis and Height (`Height`) on the x-axis, from the NHANES data.  
+> 3. This data shown as a scatterplot, with opacity and points coloured by race.
+>
+> > ## Solution
+> > 
+> > 
+> > ~~~
+> > dat %>%
+> >   filter(Race1 %in% c("Black", "Mexican"),
+> >          Age > 17) %>%
+> >   ggplot(aes(x = Height, y = Weight, colour = Race1)) +
+> >   geom_point(alpha = 0.4)
+> > ~~~
+> > {: .language-r}
+> > 
+> > <img src="../fig/rmd-01-weight vs height by race plot-1.png" title="plot of chunk weight vs height by race plot" alt="plot of chunk weight vs height by race plot" width="612" style="display: block; margin: auto;" />
+> {: .solution}
+{: .challenge}
+
+We fit the model using `lm()`. With `formula = BMI ~ Weight + Sex` we specify that our model has two explanatory variables, `Weight` and `Sex`. 
+
+
+~~~
+BMI_Weight_Sex <- dat %>%
+  filter(Age > 17) %>%
+  lm(formula = BMI ~ Weight + Sex)
+~~~
+{: .language-r}
+
+The linear model equation associated with this model has the general form
+
+$$E(y) = \beta_0 + \beta_1 \times x_1 + \beta_2 \times x_2$$.
+
+Notice that we now have the additional parameters, $\beta_2$ and $x_2$, in comparison to the simple linear regression model equation. In the context of our model, $\beta_1$ is the parameter for the effect of `Weight` and $\beta_2$ is the parameter for the effect of `Sex`. Recall from the simple linear regression lesson that a categorical variable has a baseline level in R. The parameter associated with the categorical variable then estimates the difference in the outcome variable in a group different from the baseline. Since "f" precedes "m" in the alphabet, R takes `female` as the baseline level. Therefore, $\beta_2$ estimates the difference in BMI between males and females, given a particular value for `Weight`. $\beta_2$ is only included when $x_2 = 1$, i.e. when the `Sex` of a participant is `male`. This results in separate intercepts for the levels of `Sex`: the intercept for `females` is given by $\beta_0$ and the intercept for `males` is given by $\beta_0 + \beta_2$. In this model, the effect of `Weight` is given by $\beta_1$, irrespective of the `Sex` of a participant. This results in equal slopes across the levels of `Sex`. 
+
+The model parameters can be obtained using `summ()` from the `jtools` package. We include 95% confidence intervals for the parameter estimates using `confint = TRUE` and three digits past the decimal using `digits = 3`. The intercept when `Sex = female` equals $5.538$ and the intercept when `Sex = male` equals $5.538 - 4.202 = 1.336$. Notice that in this model, the effect of `Weight` is $0.310$, regardless of `Sex`. The model equation can therefore be updated to be:
+
+$$E(\text{BMI}) = 5.538 + 0.310 \times \text{Weight} -4.202 \times x_2,$$  
+
+where $x_2 = 1$ for `Sex = male` and $0$ otherwise. 
+
+
+
+~~~
+summ(BMI_Weight_Sex, confint = TRUE, digits = 3)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Warning: Removed 320 rows containing missing values (geom_point).
-~~~
-{: .warning}
+MODEL INFO:
+Observations: 6177 (320 missing obs. deleted)
+Dependent Variable: BMI
+Type: OLS linear regression 
 
-<img src="../fig/rmd-01-BMI_Weight_Gender-1.png" title="plot of chunk BMI_Weight_Gender" alt="plot of chunk BMI_Weight_Gender" width="612" style="display: block; margin: auto;" />
+MODEL FIT:
+F(2,6174) = 19431.981, p = 0.000
+R² = 0.863
+Adj. R² = 0.863 
+
+Standard errors: OLS
+--------------------------------------------------------------
+                      Est.     2.5%    97.5%    t val.       p
+----------------- -------- -------- -------- --------- -------
+(Intercept)          5.538    5.289    5.787    43.656   0.000
+Weight               0.310    0.307    0.313   196.965   0.000
+Sexmale             -4.202   -4.333   -4.071   -63.075   0.000
+--------------------------------------------------------------
+~~~
+{: .output}
+
+> ## Exercise  
+> 1. Using the `lm()` command, fit a multiple linear regression of Weight
+> (`Weight`) as a function of Height (`Height`), grouped by `Black` and `Mexican` race (`Race1`). Name this `lm` object `Weight_Height_Race`.  
+> 2. Using the `summ` function from the `jtools` package, answer the following questions:
+>   
+> A) What Weight does the model predict, on average,
+> for an individual, belonging to the baseline level of `Race1`,
+> with a `Height` of 0?  
+> B) What is R taking as the baseline level of `Race1` and why?  
+> C) By how much is `Weight` expected to differ, on average, for
+> the alternative level of `Race1`?  
+> D) By how much is `Weight` expected to differ, on average, for
+> a one-unit difference in `Height`?  
+> E) Given these values and the names of the response and explanatory
+> variables, how can the general equation $E(y) = \beta_0 + {\beta}_1 
+> \times x_1 + {\beta}_2 \times x_2$ be adapted to represent the model? 
+>
+> > ## Solution
+> > 
+> > 
+> > ~~~
+> > Weight_Height_Race1 <- dat %>%
+> >   filter(Race1 %in% c("Black", "Mexican"),
+> >          Age > 17) %>%
+> >   lm(formula = Weight ~ Height + Race1)
+> > 
+> > summ(Weight_Height_Race1, confint = TRUE, digits=3)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > MODEL INFO:
+> > Observations: 1141 (58 missing obs. deleted)
+> > Dependent Variable: Weight
+> > Type: OLS linear regression 
+> > 
+> > MODEL FIT:
+> > F(2,1138) = 119.301, p = 0.000
+> > R² = 0.173
+> > Adj. R² = 0.172 
+> > 
+> > Standard errors: OLS
+> > -----------------------------------------------------------------
+> >                         Est.      2.5%     97.5%   t val.       p
+> > ------------------ --------- --------- --------- -------- -------
+> > (Intercept)          -61.745   -83.057   -40.433   -5.684   0.000
+> > Height                 0.882     0.756     1.007   13.751   0.000
+> > Race1Mexican          -3.396    -5.891    -0.901   -2.671   0.008
+> > -----------------------------------------------------------------
+> > ~~~
+> > {: .output}
+> > 
+> > A) -61.745 cm  
+> > B) `Black`, because "b" precedes "m" in the alphabet.  
+> > C) On average, individuals from the two races are expected to differ
+> > by 3.396 cm.  
+> > D) 0.882 cm.  
+> > E) $E(\text{Weight}) = -61.745 + 0.882 \times \text{Height} - 3.396 \times \text{RaceMexican}$, where $RaceMexican = 1$ for `Mexican` participants and 
+> > $0$ otherwise.
+> {: .solution}
+{: .challenge}
+
+The model can be visualised using two lines, representing the levels of `Sex`. Rather than using `effect_plot()` from the `jtools` package, we use `interact_plot` from the `interactions` package. We specify the model by its name, the continuous explanatory variable using `pred = Weight` and the categorical explanatory variable using `modx = Sex`. We include the data points using `plot.points = TRUE` and introduce opacity into the data points using `point.alpha = 0.4`. 
+
+Note that R returns the warning "Weight and Sex are not included in an interaction with one another in the model." - we will learn what interactions are and when they might be appropriate in the next episode. In this scenario we can safely ignore the warning.
+
+
+~~~
+interact_plot(BMI_Weight_Sex, pred = Weight, modx = Sex,
+              plot.points = TRUE, point.alpha = 0.4)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-01-effect_plot BMI_Weight_Sex-1.png" title="plot of chunk effect_plot BMI_Weight_Sex" alt="plot of chunk effect_plot BMI_Weight_Sex" width="612" style="display: block; margin: auto;" />
+
+
+> ## Exercise  
+> To help others interpret the `Weight_Height_Race1` model, produce a figure. 
+> Make this figure using the `interactions` package.
+>
+> > ## Solution
+> > 
+> > ~~~
+> > interact_plot(Weight_Height_Race1, pred = Height, modx = Race1,
+> >               plot.points = TRUE, point.alpha = 0.4)
+> > ~~~
+> > {: .language-r}
+> > 
+> > <img src="../fig/rmd-01-plot Weight_Height_Race1-1.png" title="plot of chunk plot Weight_Height_Race1" alt="plot of chunk plot Weight_Height_Race1" width="612" style="display: block; margin: auto;" />
+> {: .solution}
+{: .challenge}
+
 
 
