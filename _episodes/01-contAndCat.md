@@ -7,9 +7,17 @@ objectives:
   - Explore the relationship between a continuous dependent variable and two explanatory variables, one continuous and one categorical, using ggplot2. 
   - Fit a linear regression model with one continuous and one categorical explanatory variable using lm(). 
   - Use the jtools package to interpret the model output. 
-  - Use the jtools and ggplot2 packages to visualise the model output.
+  - Use the interactions package to visualise the model output.
 keypoints:
+  - A scatterplot, with points coloured by the levels of a categorical variable, can be used to explore the relationship between two continuous variables and a categorical variable.
+  - The categorical variable can be added to the `formula` in `lm()` using a `+`.
+  - The model output shows separate intercepts for the levels of the categorical variable. The slope across the levels of the categorical variable is held constant. 
+  - Parallel lines can be added to the exploratory scatterplot to visualise the linear regression model. 
 questions:
+  - How can the relationship between three variables, two of which are continuous and one of which is categorical, be visualised in R?
+  - How can a linear regression model be fit to this type of data in R?
+  - How are the model parameters obtained from R and interpreted?
+  - How is the linear regression model visualised in R?
 teaching: 10
 execises: 10
 ---
