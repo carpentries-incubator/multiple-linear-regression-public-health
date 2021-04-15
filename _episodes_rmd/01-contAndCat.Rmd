@@ -26,6 +26,7 @@ source("../bin/obtain_data.R")
 knitr_fig_path("01-")
 
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(jtools)
 library(interactions)
@@ -45,23 +46,22 @@ dat %>%
 ```
 
 > ## Exercise  
-> You have been asked to model the relationship between `Height`
-> and `Weight` in the NHANES data, using data from participants
-> with a `Black` or `Mexican` race. Use the ggplot2
+> You have been asked to model the relationship between `FEV1`
+> and `Age` in the NHANES data, splitting observations by whether
+> participants are active or ex smokers (`SmokeNow`). Use the ggplot2
 > package to create an exploratory plot, ensuring that:
-> 1. The data is filtered for participants over the age of 17, with a 
-> Black or Mexican race. Race is described by the `Race1` variable.  
-> 2. Weight (`Weight`) on the y-axis and Height (`Height`) on the x-axis, from the NHANES data.  
-> 3. This data shown as a scatterplot, with opacity and points coloured by race.
+> 1. NAs are discarded from the `SmokeNow` variable.  
+> 2. FEV1 (`FEV1`) on the y-axis and Age (`Age`) on the x-axis.
+> 3. This data shown as a scatterplot, with opacity and points coloured by 
+> `SmokeNow`.
 >
 > > ## Solution
 > > 
-> > ```{r weight vs height by race plot, warning = FALSE}
+> > ```{r FEV1 vs Age by SmokeNow plot, warning = FALSE}
 > > dat %>%
-> >   filter(Race1 %in% c("Black", "Mexican"),
-> >          Age > 17) %>%
-> >   ggplot(aes(x = Height, y = Weight, colour = Race1)) +
-> >   geom_point(alpha = 0.4)
+> >  drop_na(SmokeNow) %>%
+> >  ggplot(aes(x = Age, y = FEV1, colour = SmokeNow)) +
+> >  geom_point(alpha = 0.4)
 > > ```
 > {: .solution}
 {: .challenge}
@@ -92,39 +92,38 @@ summ(BMI_Weight_Sex, confint = TRUE, digits = 3)
 ```
 
 > ## Exercise  
-> 1. Using the `lm()` command, fit a multiple linear regression of Weight
-> (`Weight`) as a function of Height (`Height`), grouped by `Black` and `Mexican` race (`Race1`). Name this `lm` object `Weight_Height_Race`.  
+> 1. Using the `lm()` command, fit a multiple linear regression of FEV1
+> (`FEV1`) as a function of Age (`Age`), grouped by `SmokeNow`.
+> Name this `lm` object `FEV1_Age_SmokeNow`.  
 > 2. Using the `summ` function from the `jtools` package, answer the following questions:
 >   
-> A) What Weight does the model predict, on average,
-> for an individual, belonging to the baseline level of `Race1`,
-> with a `Height` of 0?  
-> B) What is R taking as the baseline level of `Race1` and why?  
-> C) By how much is `Weight` expected to differ, on average, for
-> the alternative level of `Race1`?  
-> D) By how much is `Weight` expected to differ, on average, for
-> a one-unit difference in `Height`?  
+> A) What `FEV1` does the model predict, on average,
+> for an individual, belonging to the baseline level of `SmokeNow`,
+> with an `Age` of 0?  
+> B) What is R taking as the baseline level of `SmokeNow` and why?  
+> C) By how much is `FEV1` expected to differ, on average, for
+> the alternative level of `SmokeNow`?  
+> D) By how much is `FEV1` expected to differ, on average, for
+> a one-unit difference in `Age`?  
 > E) Given these values and the names of the response and explanatory
 > variables, how can the general equation $E(y) = \beta_0 + {\beta}_1 
 > \times x_1 + {\beta}_2 \times x_2$ be adapted to represent the model? 
 >
 > > ## Solution
 > > 
-> > ```{r weight vs height by race model}
-> > Weight_Height_Race1 <- dat %>%
-> >   filter(Race1 %in% c("Black", "Mexican"),
-> >          Age > 17) %>%
-> >   lm(formula = Weight ~ Height + Race1)
+> > ```{r FEV1 vs Age by SmokeNow model}
+> > FEV1_Age_SmokeNow <- dat %>%
+> >   lm(formula = FEV1 ~ Age + SmokeNow)
 > > 
-> > summ(Weight_Height_Race1, confint = TRUE, digits=3)
+> > summ(FEV1_Age_SmokeNow, confint = TRUE, digits=3)
 > > ```
 > > 
-> > A) -61.745 cm  
-> > B) `Black`, because "b" precedes "m" in the alphabet.  
-> > C) On average, individuals from the two races are expected to differ
-> > by 3.396 cm.  
-> > D) 0.882 cm.  
-> > E) $E(\text{Weight}) = -61.745 + 0.882 \times \text{Height} - 3.396 \times \text{RaceMexican}$, where $RaceMexican = 1$ for `Mexican` participants and 
+> > A) 4928.155 mL  
+> > B) `No`, because "n" precedes "y" in the alphabet.  
+> > C) On average, individuals from the two categories are expected to differ
+> > by 249.305 mL.  
+> > D) It is expected to decrease by 35.686 mL.  
+> > E) $E(\text{FEV1}) = 4928.155 - 35.686 \times \text{Age} - 249.305 \times \text{SmokeNowYes}$, where $\text{SmokeNowYes} = 1$ for current smokers and 
 > > $0$ otherwise.
 > {: .solution}
 {: .challenge}
@@ -140,16 +139,15 @@ interact_plot(BMI_Weight_Sex, pred = Weight, modx = Sex,
 
 
 > ## Exercise  
-> To help others interpret the `Weight_Height_Race1` model, produce a figure. 
+> To help others interpret the `FEV1_Age_SmokeNow` model, produce a figure. 
 > Make this figure using the `interactions` package.
 >
 > > ## Solution
-> > ```{r plot Weight_Height_Race1, warning = FALSE}
-> > interact_plot(Weight_Height_Race1, pred = Height, modx = Race1,
+> > ```{r plot FEV1_Age_SmokeNow, warning = FALSE}
+> > interact_plot(FEV1_Age_SmokeNow, pred = Age, modx = SmokeNow,
 > >               plot.points = TRUE, point.alpha = 0.4)
 > > ```
 > {: .solution}
 {: .challenge}
-
 
 
