@@ -14,3 +14,105 @@ execises: 10
 
 
 
+As with the simple linear regression model, the multiple linear regression model allows us to make predictions. First we will calculate predictions using the model equation. Then we will see how R can calculate predictions for us using the `predict()` function.
+
+Let us use the `BPSysAve_Age_Sex` model from the previous episode. The equation for this model was $E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times \text{SexMale} - \text{SexMale} \times 0.28 \times \text{Age}$, where $\text{SexMale} = 1$ for male participants and $0$ otherwise. 
+
+For a 30-year old female, the model predicts an average systolic blood pressure of $E(\text{BPSysAve}) = 93.39 + 0.55 \times 30 + 17.06 \times 0 - 0 \times 0.28 \times 30 = 93.39 + 16.5 = 109.89$.  
+For a 30-year old male, the model predicts an average systolic blood pressure of $E(\text{BPSysAve}) = 93.39 + 0.55 \times 30 + 17.06 \times 1 - 1 \times 0.28 \times 30 = 93.39 + 16.5 + 17.06 - 8.4 = 118.55$.
+
+>## Exercise
+>Given the `summ` output from our `Hemoglobin_Age_Sex` model, 
+>the model can be described
+>as $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times \text{SexMale} - \text{SexMale} \times 0.02 \times \text{Age}$, where $\text{SexMale} = 1$ for participants of the male `Sex` and $0$ otherwise. 
+>What level of Hemoglobin does the model predict, on average, 
+>for an individual of the female `Sex` with an `Age` of 40? 
+> And what Hemoglobin is predicted for a male of the same `Age`?
+> > ## Solution
+> > For 40-year old females: $13.29 + 0.00 \times 40 + 2.76 \times 0 - 0 \times 0.02 \times 40 = 13.29$.  
+> > For 40-year old males: $13.29 + 0.00 \times 40 + 2.76 \times 1 - 1 \times 0.02 \times 40 = 13.29 + 2.76 - 0.8 = 15.25$.
+> {: .solution}
+{: .challenge}
+
+Using the `predict()` function brings two advantages. First, when calculating multiple predictions, we are saved the effort of inserting multiple values into our model manually and doing the calculations. Secondly, `predict()` returns 95% confidence intervals around the predictions, giving us a sense of the uncertainty around the predictions. 
+
+To use `predict()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with the values 30, 40, 50 and 60. We then provide `predict()` with this `tibble`, alongside the model from which we wish to have predictions and `interval = "confidence"` to obtain 95% confidence intervals. 
+
+From the output we can see that the model predicts an average systolic blood pressure of 109.8596 for a 30-year old female. The confidence interval around this prediction is [109.0593, 110.6599]. 
+
+
+~~~
+BPSysAve_Age_Sex <- dat %>%
+  filter(Age > 17) %>%
+  lm(formula = BPSysAve ~ Age * Sex)
+
+predictionDat <- tibble(Age = c(30, 40, 50, 60,
+                                30, 40, 50, 60),
+                        Sex = c("female", "female", "female", "female",
+                                "male", "male", "male", "male"))
+
+predict(BPSysAve_Age_Sex, newdata = predictionDat,
+        interval = "confidence")
+~~~
+{: .language-r}
+
+
+
+~~~
+       fit      lwr      upr
+1 109.8596 109.0593 110.6599
+2 115.3480 114.7218 115.9741
+3 120.8364 120.2654 121.4073
+4 126.3247 125.6597 126.9897
+5 118.6078 117.7888 119.4268
+6 121.3253 120.6856 121.9649
+7 124.0428 123.4660 124.6195
+8 126.7603 126.0962 127.4243
+~~~
+{: .output}
+
+
+>## Exercise
+>Using the `predict` function, obtain the expected mean Hemoglobin levels
+>predicted by the `Hemoglobin_Age_Sex` model for individuals with an Age 
+> of 20, 30, 40 and 50. Obtain confidence intervals for these predictions. 
+How are these confidence intervals interpreted?
+> > ## Solution
+> > 
+> > ~~~
+> > Hemoglobin_Age_Sex <- dat %>%
+> >  filter(Age > 17) %>%
+> >  lm(formula = Hemoglobin ~ Age * Sex)
+> > 
+> > predictionDat <- tibble(Age = c(20, 30, 40, 50,
+> >                                  20, 30, 40, 50),
+> >                          Sex = c("female", "female", "female", "female",
+> >                                  "male", "male", "male", "male"))
+> > 
+> > predict(Hemoglobin_Age_Sex, newdata = predictionDat,
+> >         interval = "confidence")
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> >        fit      lwr      upr
+> > 1 13.31002 13.23220 13.38784
+> > 2 13.31799 13.25790 13.37808
+> > 3 13.32595 13.27898 13.37293
+> > 4 13.33392 13.29098 13.37685
+> > 5 15.60637 15.52626 15.68649
+> > 6 15.38407 15.32199 15.44615
+> > 7 15.16177 15.11334 15.21019
+> > 8 14.93946 14.89595 14.98298
+> > ~~~
+> > {: .output}
+> > Recall that 95% of 95% confidence intervals are expected to contain the 
+> > population mean. 
+> > Therefore, we can be fairly confident that the true population means lie 
+> > somewhere between the bounds of the intervals, assuming that our model is good.
+> {: .solution}
+{: .challenge}
+
+
