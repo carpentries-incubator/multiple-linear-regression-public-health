@@ -7,9 +7,17 @@ objectives:
   - Recognise from an exploratory plot when an interaction between a continuous and a categorical explanatory variable is appropriate. 
   - Fit a linear regression model including an interaction between one continuous and one categorical explanatory variable using lm().
   - Use the jtools package to interpret the model output. 
-  - Use the jtools and ggplot2 packages to visualise the model output.
+  - Use the interactions package to visualise the model output.
 keypoints:
+  - It may be appropriate to include an interaction when the slopes appear to differ across levels of a categorical variable.
+  - Replace `+` by `*` in the `lm()` command to add an interaction. 
+  - When an interaction is included, two coefficients relate to differences between the two levels of a categorical variable: one relates to a difference in the intercept, the other to a difference in the slope. 
+  - The function `interact_plot()` can be used to visualise the model. 
 questions:
+  - When is it appropriate to add an interaction to a multiple linear regression model?
+  - How is an interaction added in the `lm()` command?
+  - How do the coefficient estimates given by `summ()` relate to the multiple linear regression model equation?
+  - How is the final model visualised in R?
 teaching: 10
 execises: 10
 ---
