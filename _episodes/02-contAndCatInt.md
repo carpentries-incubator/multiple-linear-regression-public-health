@@ -16,3 +16,194 @@ execises: 10
 
 
 
+In this episode we will expand our model to include an interaction between the continuous and categorical explanatory variables. As a result, not only the intercept but also the coefficient of the explanatory variable will differ across the levels of the categorical variable in our model. This is appropriate when the slope in our scatterplot differs between the levels of the categorical variable. 
+
+We will use the variables `BPSysAve`, `Age` and `Sex` as an example. Looking at the scatterplot below, for which the data has been filtered to include participants over the age of 17, it seems that the slope for females is greater than for males.   
+
+
+~~~
+dat %>%
+  filter(Age > 17) %>%
+  ggplot(aes(x = Age, y = BPSysAve, colour = Sex)) +
+  geom_point(alpha = 0.4)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-BPSysAve by Age across Sex plot-1.png" title="plot of chunk BPSysAve by Age across Sex plot" alt="plot of chunk BPSysAve by Age across Sex plot" width="612" style="display: block; margin: auto;" />
+
+> ## Exercise  
+> You have been asked to model the relationship between `Hemoglobin`
+> and `Age` in the NHANES data, splitting observations by `Sex`.
+> Use the `ggplot2`
+> package to create an exploratory plot, ensuring that:
+> 1. Only participants aged 18 or over are included.  
+> 2. Hemoglobin (`Hemoglobin`) is on the y-axis and Age (`Age`) is on the 
+> x-axis.
+> 3. This data shown as a scatterplot, with opacity and points coloured by 
+> `Sex`.
+>
+> > ## Solution
+> > 
+> > 
+> > ~~~
+> > dat %>%
+> >   filter(Age>17) %>%
+> >   ggplot(aes(x = Age, y = Hemoglobin, colour = Sex)) +
+> >   geom_point(alpha = 0.4) 
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in FUN(X[[i]], ...): object 'Hemoglobin' not found
+> > ~~~
+> > {: .error}
+> > 
+> > <img src="../fig/rmd-02-Hemoglobin vs Age by Sex plot-1.png" title="plot of chunk Hemoglobin vs Age by Sex plot" alt="plot of chunk Hemoglobin vs Age by Sex plot" width="612" style="display: block; margin: auto;" />
+> {: .solution}
+{: .challenge}
+
+The code for fitting our model is similar to the previous `lm()` commands. Notice however that instead of a `+` between the explanatory variables, we use a `*`. Hereby we tell `lm()` that we want an interaction between the explanatory variables to be included in the model. The interaction allows the effect of `Age` to differ across the levels of `Sex`. 
+
+In the output from `summ()` we see two coefficients that relate to the baseline level of `Sex`: an intercept and the effect for `Age`. For the alternative level of `Sex`, we see two further coefficients: the difference in the intercept (`Sexmale`) and the difference in the slope (`Age:Sexmale`). The equation for this model therefore becomes:
+
+$$E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times \text{SexMale} - \text{SexMale} \times 0.28 \times \text{Age}$$
+
+Since the difference in the intercepts is positive, we expect a greater intercept for males than for females. Furthermore, since the difference in the slopes is negative, we expect a smaller slope for males than for females.  
+
+
+~~~
+BPSysAve_Age_Sex <- dat %>%
+  filter(Age > 17) %>%
+  lm(formula = BPSysAve ~ Age * Sex)
+
+summ(BPSysAve_Age_Sex)
+~~~
+{: .language-r}
+
+
+
+~~~
+MODEL INFO:
+Observations: 5996 (501 missing obs. deleted)
+Dependent Variable: BPSysAve
+Type: OLS linear regression 
+
+MODEL FIT:
+F(3,5992) = 552.67, p = 0.00
+R² = 0.22
+Adj. R² = 0.22 
+
+Standard errors: OLS
+------------------------------------------------
+                     Est.   S.E.   t val.      p
+----------------- ------- ------ -------- ------
+(Intercept)         93.39   0.80   116.27   0.00
+Age                  0.55   0.02    35.63   0.00
+Sexmale             17.06   1.15    14.89   0.00
+Age:Sexmale         -0.28   0.02   -12.68   0.00
+------------------------------------------------
+~~~
+{: .output}
+
+> ## Exercise  
+> 1. Using the `lm()` command, fit a multiple linear regression model of 
+> Hemoglobin
+> (`Hemoglobin`) as a function of Age (`Age`), grouped by `Sex`, including
+> an interaction between `Age` and `Sex`.
+> Name this `lm` object `Hemoglobin_Age_Sex`.  
+> 2. Using the `summ` function from the `jtools` package, answer the following questions:
+>   
+> A) What concentration of `Hemoglobin` does the model predict, on average,
+> for an individual, belonging to the baseline level of `Sex`,
+> with an `Age` of 0?  
+> B) By how much is `Hemoglobin` expected to differ, on average, for
+> the alternative level of `Sex`, at an `Age` of 0?  
+> C) By how much is `Hemoglobin` expected to differ, on average, for
+> a one-unit difference in `Age` in the baseline level of `Sex`?  
+> D) By how much is `Hemoglobin` expected to differ, on average, for
+> a one-unit difference in `Age` in the alternative level of `Sex`?  
+> E) Given these values and the names of the response and explanatory
+> variables, how can the general equation $E(y) = \beta_0 + {\beta}_1 
+> \times x_1 + {\beta}_2 \times x_2 + {\beta}_2 \times {\beta}_3 \times x_2$ be adapted to represent the model? 
+>
+> > ## Solution
+> > 
+> > 
+> > ~~~
+> > Hemoglobin_Age_Sex <- dat %>%
+> >   filter(Age > 17) %>%
+> >   lm(formula = Hemoglobin ~ Age * Sex)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in eval(predvars, data, env): object 'Hemoglobin' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
+> > summ(Hemoglobin_Age_Sex)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in summ(Hemoglobin_Age_Sex): object 'Hemoglobin_Age_Sex' not found
+> > ~~~
+> > {: .error}
+> > 
+> > A) 13.29 g/dL.    
+> > B) On average, individuals from the two categories are expected to differ
+> > by 2.76 g/dL at an `Age` of 0.    
+> > C) On average, female participants with a one-unit difference in `Age` 
+> > are expected to differ by 0.00 in their `Hemoglobin` concentration.  
+> > D) On average, male participants with a one-unit difference in `Age` 
+> > are expected to differ by 0.02 in their `Hemoglobin` concentration.   
+> > E) $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times \text{SexMale} - \text{SexMale} \times 0.02 \times \text{Age}$, where $\text{SexMale} = 1$ for participants of the male `Sex` and $0$ otherwise.
+> {: .solution}
+{: .challenge}
+
+We can visualise the model, as before, using the `interact_plot()` function.
+
+
+~~~
+interact_plot(BPSysAve_Age_Sex, pred = Age, modx = Sex,
+              plot.points = TRUE, point.alpha = 0.4)
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-02-visualise BPSYSAve_Age_Sex-1.png" title="plot of chunk visualise BPSYSAve_Age_Sex" alt="plot of chunk visualise BPSYSAve_Age_Sex" width="612" style="display: block; margin: auto;" />
+
+> ## Exercise  
+> To help others interpret the `Hemoglobin_Age_Sex` model, produce a figure. 
+> Make this figure using the `interactions` package.
+>
+> > ## Solution
+> > 
+> > ~~~
+> > interact_plot(Hemoglobin_Age_Sex, pred = Age, modx = Sex, 
+> >               plot.points = TRUE, point.alpha = 0.4)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in "svyglm" %in% class(model): object 'Hemoglobin_Age_Sex' not found
+> > ~~~
+> > {: .error}
+> {: .solution}
+{: .challenge}
+
+
+
+
+
+
