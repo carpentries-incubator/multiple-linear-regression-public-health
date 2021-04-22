@@ -7,7 +7,11 @@ objectives:
   - Calculate a prediction from a simple linear regression model using parameter estimates given by the model output.
   - Use the predict function to generate predictions from a multiple linear regression model.
 keypoints:
+  - Predictions of the mean in the outcome variable can be manually calculated using the model's equation.
+  - Predictions of multiple means in the outcome variable alongside 95% CIs can be obtained using the `predict()` function. 
 questions:
+  - How can predictions be calculated using the model equation of a multiple linear regression model?
+  - How can R be used to obtain predictions from a multiple linear regression model?
 teaching: 10
 execises: 10
 ---
