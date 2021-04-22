@@ -68,7 +68,9 @@ The code for fitting our model is similar to the previous `lm()` commands. Notic
 
 In the output from `summ()` we see two coefficients that relate to the baseline level of `Sex`: an intercept and the effect for `Age`. For the alternative level of `Sex`, we see two further coefficients: the difference in the intercept (`Sexmale`) and the difference in the slope (`Age:Sexmale`). The equation for this model therefore becomes:
 
-$$E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times \text{SexMale} - \text{SexMale} \times 0.28 \times \text{Age}$$
+$$E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times \text{SexMale} - \text{SexMale} \times 0.28 \times \text{Age}$$,
+
+where $\text{SexMale} = 1$ for male participants and $0$ otherwise. 
 
 Since the difference in the intercepts is positive, we expect a greater intercept for males than for females. Furthermore, since the difference in the slopes is negative, we expect a smaller slope for males than for females.  
 
