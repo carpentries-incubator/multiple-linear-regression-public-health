@@ -14,7 +14,7 @@ keypoints:
 questions:
   - How can the relationship between three variables, two of which are continuous and one of which is categorical, be visualised in R?
   - How can a linear regression model be fit to this type of data in R?
-  - How are the model parameters obtained from R and interpreted?
+  - How are the model parameters obtained and interpreted?
   - How is the linear regression model visualised in R?
 teaching: 10
 execises: 10
@@ -36,7 +36,7 @@ In this episode we will learn to fit a linear regression model when we have two 
 
 Let us take response variable `BMI`, the continuous explanatory variable `Weight` and the categorical explanatory variable `Sex` as an example. The code below subsets our data for individuals who are older than 17 years with `filter()`. The plotting is then initiated using `ggplot()`. Inside `aes()`, we select the response variable with `y = BMI`, the continuous explanatory variable with `x = Weight` and the categorical explanatory variable with `colour = Sex`. As a consequence of the final argument, the points produced by `geom_point()` are coloured by `Sex`. Finally, we include opacity using `alpha = 0.4`, which allows us to distinguish areas dense in points from sparser areas. Note that RStudio returns the error "Removed 320 rows containing missing values (geom_point)." - this reflects that 320 participants had missing BMI and/or Weight data. 
 
-The plot suggests that on average, participants of the female sex have a higher `BMI` than participants of the male sex, for any particular value of `Weight`. We might therefore want to account for this in our model by having *separate intercepts* for the levels of `Sex`.
+The plot suggests that on average, participants classed as female have a higher `BMI` than participants classed as male, for any particular value of `Weight`. We might therefore want to account for this in our model by having *separate intercepts* for the levels of `Sex`.
 
 ```{r BMI_Weight_Sex exploratory plot, warning = FALSE}
 dat %>%
@@ -51,9 +51,9 @@ dat %>%
 > participants are active or ex smokers (`SmokeNow`). Use the ggplot2
 > package to create an exploratory plot, ensuring that:
 > 1. NAs are discarded from the `SmokeNow` variable.  
-> 2. FEV1 (`FEV1`) on the y-axis and Age (`Age`) on the x-axis.
-> 3. This data shown as a scatterplot, with opacity and points coloured by 
-> `SmokeNow`.
+> 2. FEV1 (`FEV1`) is on the y-axis and Age (`Age`) is on the x-axis.
+> 3. These data are shown as a scatterplot, with points coloured by 
+> `SmokeNow` and an opacity of 0.4.
 >
 > > ## Solution
 > > 
