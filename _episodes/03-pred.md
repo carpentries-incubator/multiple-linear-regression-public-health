@@ -40,7 +40,7 @@ For a 30-year old male, the model predicts an average systolic blood pressure of
 
 Using the `predict()` function brings two advantages. First, when calculating multiple predictions, we are saved the effort of inserting multiple values into our model manually and doing the calculations. Secondly, `predict()` returns 95% confidence intervals around the predictions, giving us a sense of the uncertainty around the predictions. 
 
-To use `predict()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with the values 30, 40, 50 and 60. We then provide `predict()` with this `tibble`, alongside the model from which we wish to have predictions and `interval = "confidence"` to obtain 95% confidence intervals. 
+To use `predict()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with `Age` having the values 30, 40, 50 and 60 for females and males. We then provide `predict()` with this `tibble`, alongside the model from which we wish to have predictions and `interval = "confidence"` to obtain 95% confidence intervals. 
 
 From the output we can see that the model predicts an average systolic blood pressure of 109.8596 for a 30-year old female. The confidence interval around this prediction is [109.0593, 110.6599]. 
 
@@ -112,7 +112,7 @@ How are these confidence intervals interpreted?
 > > 8 14.93946 14.89595 14.98298
 > > ~~~
 > > {: .output}
-> > Recall that 95% of 95% confidence intervals are expected to contain the 
+> > Recall that 95% of the 95% confidence intervals are expected to contain the 
 > > population mean. 
 > > Therefore, we can be fairly confident that the true population means lie 
 > > somewhere between the bounds of the intervals, assuming that our model is good.
