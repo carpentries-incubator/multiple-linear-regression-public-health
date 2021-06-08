@@ -17,6 +17,7 @@ To obtain the data for this lesson, run the following code:
 
 ~~~
 library(NHANES)
+library(RNHANES)
 library(dplyr)
 
 # proportions representing a simple random sample
@@ -53,11 +54,10 @@ dat <- NHANESraw %>%
             TVHrsDay, 
             CompHrsDay,
             TVHrsDayChild,
-            CompHrsDayChild)) # remove data which was only recorded for one out of two survey rounds
-
+            CompHrsDayChild)) # remove data which was only recorded for 
+                              # one out of two survey rounds
+  
 rm(prop)
-
-
 ~~~
 {: .language-r}
 
