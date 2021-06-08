@@ -6,11 +6,10 @@ Please make sure the following packages are loaded before starting this lesson:
 ~~~
 library(NHANES)
 library(ggplot2)
-library(cowplot)
 library(jtools)
+library(interactions)
 library(dplyr)
 library(tidyr)
-library(Hmisc)
 ~~~
 {: .language-r}
 
