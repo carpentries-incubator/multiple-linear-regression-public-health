@@ -5,6 +5,7 @@ Please make sure the following packages are loaded before starting this lesson:
 
 ~~~
 library(NHANES)
+library(RNHANES)
 library(ggplot2)
 library(jtools)
 library(interactions)
@@ -16,10 +17,6 @@ library(tidyr)
 To obtain the data for this lesson, run the following code:
 
 ~~~
-library(NHANES)
-library(RNHANES)
-library(dplyr)
-
 # proportions representing a simple random sample
 prop <- as.numeric(table(NHANES$Race1)/nrow(NHANES))
 
@@ -54,9 +51,30 @@ dat <- NHANESraw %>%
             TVHrsDay, 
             CompHrsDay,
             TVHrsDayChild,
-            CompHrsDayChild)) # remove data which was only recorded for 
-                              # one out of two survey rounds
-  
+            CompHrsDayChild)) %>% # remove data which was only recorded for 
+  # one out of two survey rounds
+  ungroup(Race1)
+
+# Add FEV1 variable
+dat <- nhanes_load_data(c("SPX_F"), "2009-2010") %>%
+  select(SEQN, SPXNFEV1) %>%
+  bind_rows(nhanes_load_data(c("SPX_G"), "2011-2012") %>% 
+              select(SEQN, SPXNFEV1)) %>%
+  filter(SEQN %in% dat$ID) %>%
+  rename(FEV1 = SPXNFEV1) %>%
+  right_join(dat, by = c("SEQN" = "ID")) %>%
+  rename(ID = SEQN)
+
+# Add LBXHGB variable (Blood hemoglobin, g/dL)
+dat <- nhanes_load_data(c("CBC_F"), "2009-2010") %>%
+  select(SEQN, LBXHGB) %>%
+  bind_rows(nhanes_load_data(c("CBC_G"), "2011-2012") %>% 
+              select(SEQN, LBXHGB)) %>%
+  filter(SEQN %in% dat$ID) %>%
+  rename(Hemoglobin = LBXHGB) %>%
+  right_join(dat, by = c("SEQN" = "ID")) %>%
+  rename(ID = SEQN)
+
 rm(prop)
 ~~~
 {: .language-r}
