@@ -1,3 +1,6 @@
+library(NHANES)
+library(dplyr)
+
 # proportions representing a simple random sample
 prop <- as.numeric(table(NHANES$Race1)/nrow(NHANES))
 
@@ -36,6 +39,6 @@ dat <- NHANESraw %>%
                                   # one out of two survey rounds
   ungroup(Race1)
 
-#save(dat, file = "data.RData")
+#save(dat, file = "bin/data.RData")
 
 rm(prop)
