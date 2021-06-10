@@ -6,11 +6,10 @@ Please make sure the following packages are loaded before starting this lesson:
 ~~~
 library(NHANES)
 library(ggplot2)
-library(cowplot)
 library(jtools)
+library(interactions)
 library(dplyr)
 library(tidyr)
-library(Hmisc)
 ~~~
 {: .language-r}
 
@@ -18,6 +17,7 @@ To obtain the data for this lesson, run the following code:
 
 ~~~
 library(NHANES)
+library(RNHANES)
 library(dplyr)
 
 # proportions representing a simple random sample
@@ -54,11 +54,10 @@ dat <- NHANESraw %>%
             TVHrsDay, 
             CompHrsDay,
             TVHrsDayChild,
-            CompHrsDayChild)) # remove data which was only recorded for one out of two survey rounds
-
+            CompHrsDayChild)) # remove data which was only recorded for 
+                              # one out of two survey rounds
+  
 rm(prop)
-
-
 ~~~
 {: .language-r}
 

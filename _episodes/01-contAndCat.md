@@ -62,6 +62,13 @@ dat %>%
 > > ~~~
 > > {: .language-r}
 > > 
+> > 
+> > 
+> > ~~~
+> > Error in FUN(X[[i]], ...): object 'FEV1' not found
+> > ~~~
+> > {: .error}
+> > 
 > > <img src="../fig/rmd-01-FEV1 vs Age by SmokeNow plot-1.png" title="plot of chunk FEV1 vs Age by SmokeNow plot" alt="plot of chunk FEV1 vs Age by SmokeNow plot" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
@@ -143,7 +150,19 @@ Sexmale             -4.202   -4.333   -4.071   -63.075   0.000
 > > ~~~
 > > FEV1_Age_SmokeNow <- dat %>%
 > >   lm(formula = FEV1 ~ Age + SmokeNow)
+> > ~~~
+> > {: .language-r}
 > > 
+> > 
+> > 
+> > ~~~
+> > Error in eval(predvars, data, env): object 'FEV1' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > summ(FEV1_Age_SmokeNow, confint = TRUE, digits=3)
 > > ~~~
 > > {: .language-r}
@@ -151,26 +170,9 @@ Sexmale             -4.202   -4.333   -4.071   -63.075   0.000
 > > 
 > > 
 > > ~~~
-> > MODEL INFO:
-> > Observations: 2265 (7735 missing obs. deleted)
-> > Dependent Variable: FEV1
-> > Type: OLS linear regression 
-> > 
-> > MODEL FIT:
-> > F(2,2262) = 560.807, p = 0.000
-> > R² = 0.331
-> > Adj. R² = 0.331 
-> > 
-> > Standard errors: OLS
-> > --------------------------------------------------------------------
-> >                         Est.       2.5%      97.5%    t val.       p
-> > ----------------- ---------- ---------- ---------- --------- -------
-> > (Intercept)         4928.155   4805.493   5050.816    78.787   0.000
-> > Age                  -35.686    -37.799    -33.573   -33.117   0.000
-> > SmokeNowYes         -249.305   -317.045   -181.564    -7.217   0.000
-> > --------------------------------------------------------------------
+> > Error in summ(FEV1_Age_SmokeNow, confint = TRUE, digits = 3): object 'FEV1_Age_SmokeNow' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > > 
 > > A) 4928.155 mL  
 > > B) `No`, because "n" precedes "y" in the alphabet.  
@@ -208,7 +210,12 @@ interact_plot(BMI_Weight_Sex, pred = Weight, modx = Sex,
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-01-plot FEV1_Age_SmokeNow-1.png" title="plot of chunk plot FEV1_Age_SmokeNow" alt="plot of chunk plot FEV1_Age_SmokeNow" width="612" style="display: block; margin: auto;" />
+> > 
+> > 
+> > ~~~
+> > Error in "svyglm" %in% class(model): object 'FEV1_Age_SmokeNow' not found
+> > ~~~
+> > {: .error}
 > {: .solution}
 {: .challenge}
 

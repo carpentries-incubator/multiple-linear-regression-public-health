@@ -87,7 +87,19 @@ How are these confidence intervals interpreted?
 > > Hemoglobin_Age_Sex <- dat %>%
 > >  filter(Age > 17) %>%
 > >  lm(formula = Hemoglobin ~ Age * Sex)
+> > ~~~
+> > {: .language-r}
 > > 
+> > 
+> > 
+> > ~~~
+> > Error in eval(predvars, data, env): object 'Hemoglobin' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > predictionDat <- tibble(Age = c(20, 30, 40, 50,
 > >                                  20, 30, 40, 50),
 > >                          Sex = c("female", "female", "female", "female",
@@ -101,17 +113,9 @@ How are these confidence intervals interpreted?
 > > 
 > > 
 > > ~~~
-> >        fit      lwr      upr
-> > 1 13.31002 13.23220 13.38784
-> > 2 13.31799 13.25790 13.37808
-> > 3 13.32595 13.27898 13.37293
-> > 4 13.33392 13.29098 13.37685
-> > 5 15.60637 15.52626 15.68649
-> > 6 15.38407 15.32199 15.44615
-> > 7 15.16177 15.11334 15.21019
-> > 8 14.93946 14.89595 14.98298
+> > Error in predict(Hemoglobin_Age_Sex, newdata = predictionDat, interval = "confidence"): object 'Hemoglobin_Age_Sex' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > > Recall that 95% of the 95% confidence intervals are expected to contain the 
 > > population mean. 
 > > Therefore, we can be fairly confident that the true population means lie 

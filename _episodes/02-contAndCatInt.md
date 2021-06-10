@@ -61,6 +61,13 @@ dat %>%
 > > ~~~
 > > {: .language-r}
 > > 
+> > 
+> > 
+> > ~~~
+> > Error in FUN(X[[i]], ...): object 'Hemoglobin' not found
+> > ~~~
+> > {: .error}
+> > 
 > > <img src="../fig/rmd-02-Hemoglobin vs Age by Sex plot-1.png" title="plot of chunk Hemoglobin vs Age by Sex plot" alt="plot of chunk Hemoglobin vs Age by Sex plot" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
@@ -138,7 +145,19 @@ Age:Sexmale         -0.28   0.02   -12.68   0.00
 > > Hemoglobin_Age_Sex <- dat %>%
 > >   filter(Age > 17) %>%
 > >   lm(formula = Hemoglobin ~ Age * Sex)
+> > ~~~
+> > {: .language-r}
 > > 
+> > 
+> > 
+> > ~~~
+> > Error in eval(predvars, data, env): object 'Hemoglobin' not found
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > summ(Hemoglobin_Age_Sex)
 > > ~~~
 > > {: .language-r}
@@ -146,27 +165,9 @@ Age:Sexmale         -0.28   0.02   -12.68   0.00
 > > 
 > > 
 > > ~~~
-> > MODEL INFO:
-> > Observations: 5995 (502 missing obs. deleted)
-> > Dependent Variable: Hemoglobin
-> > Type: OLS linear regression 
-> > 
-> > MODEL FIT:
-> > F(3,5991) = 1026.31, p = 0.00
-> > R² = 0.34
-> > Adj. R² = 0.34 
-> > 
-> > Standard errors: OLS
-> > ------------------------------------------------
-> >                      Est.   S.E.   t val.      p
-> > ----------------- ------- ------ -------- ------
-> > (Intercept)         13.29   0.06   219.70   0.00
-> > Age                  0.00   0.00     0.68   0.49
-> > Sexmale              2.76   0.09    31.85   0.00
-> > Age:Sexmale         -0.02   0.00   -13.94   0.00
-> > ------------------------------------------------
+> > Error in summ(Hemoglobin_Age_Sex): object 'Hemoglobin_Age_Sex' not found
 > > ~~~
-> > {: .output}
+> > {: .error}
 > > 
 > > A) 13.29 g/dL.    
 > > B) On average, individuals from the two categories are expected to differ
@@ -202,7 +203,12 @@ interact_plot(BPSysAve_Age_Sex, pred = Age, modx = Sex,
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-02-plot Hemoglobin_Age_Sex-1.png" title="plot of chunk plot Hemoglobin_Age_Sex" alt="plot of chunk plot Hemoglobin_Age_Sex" width="612" style="display: block; margin: auto;" />
+> > 
+> > 
+> > ~~~
+> > Error in "svyglm" %in% class(model): object 'Hemoglobin_Age_Sex' not found
+> > ~~~
+> > {: .error}
 > {: .solution}
 {: .challenge}
 
