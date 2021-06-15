@@ -49,12 +49,36 @@ From the output we can see that the model predicts an average systolic blood pre
 BPSysAve_Age_Sex <- dat %>%
   filter(Age > 17) %>%
   lm(formula = BPSysAve ~ Age * Sex)
+~~~
+{: .language-r}
 
+
+
+~~~
+Error in dat %>% filter(Age > 17) %>% lm(formula = BPSysAve ~ Age * Sex): could not find function "%>%"
+~~~
+{: .error}
+
+
+
+~~~
 predictionDat <- tibble(Age = c(30, 40, 50, 60,
                                 30, 40, 50, 60),
                         Sex = c("female", "female", "female", "female",
                                 "male", "male", "male", "male"))
+~~~
+{: .language-r}
 
+
+
+~~~
+Error in tibble(Age = c(30, 40, 50, 60, 30, 40, 50, 60), Sex = c("female", : could not find function "tibble"
+~~~
+{: .error}
+
+
+
+~~~
 predict(BPSysAve_Age_Sex, newdata = predictionDat,
         interval = "confidence")
 ~~~
@@ -63,17 +87,9 @@ predict(BPSysAve_Age_Sex, newdata = predictionDat,
 
 
 ~~~
-       fit      lwr      upr
-1 109.8596 109.0593 110.6599
-2 115.3480 114.7218 115.9741
-3 120.8364 120.2654 121.4073
-4 126.3247 125.6597 126.9897
-5 118.6078 117.7888 119.4268
-6 121.3253 120.6856 121.9649
-7 124.0428 123.4660 124.6195
-8 126.7603 126.0962 127.4243
+Error in predict(BPSysAve_Age_Sex, newdata = predictionDat, interval = "confidence"): object 'BPSysAve_Age_Sex' not found
 ~~~
-{: .output}
+{: .error}
 
 
 >## Exercise
@@ -93,7 +109,7 @@ How are these confidence intervals interpreted?
 > > 
 > > 
 > > ~~~
-> > Error in eval(predvars, data, env): object 'Hemoglobin' not found
+> > Error in dat %>% filter(Age > 17) %>% lm(formula = Hemoglobin ~ Age * : could not find function "%>%"
 > > ~~~
 > > {: .error}
 > > 
@@ -104,7 +120,19 @@ How are these confidence intervals interpreted?
 > >                                  20, 30, 40, 50),
 > >                          Sex = c("female", "female", "female", "female",
 > >                                  "male", "male", "male", "male"))
+> > ~~~
+> > {: .language-r}
 > > 
+> > 
+> > 
+> > ~~~
+> > Error in tibble(Age = c(20, 30, 40, 50, 20, 30, 40, 50), Sex = c("female", : could not find function "tibble"
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
 > > predict(Hemoglobin_Age_Sex, newdata = predictionDat,
 > >         interval = "confidence")
 > > ~~~
