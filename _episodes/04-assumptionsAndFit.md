@@ -83,7 +83,8 @@ will be larger.
 ## Assessing the assumptions of the multiple linear regression model
 We learned to assess six assumptions in the simple linear regression [episode](https://carpentries-incubator.github.io/simple-linear-regression-public-health/06-fitAndAssumptionSLR) 
 on model assumptions. These assumptions also hold in the multiple linear 
-regression context. Below we will practice assessing each of the six assumptions. 
+regression context, although in some cases their assessment is a little more 
+extensive. Below we will practice assessing these assumptions. 
 
 ### Validity
 Recall that the validity assumption states that the model is appropriate 
@@ -112,6 +113,41 @@ Recall that the representativeness assumption states that the sample is
 representative of the population to which we are generalising our findings. This
 assumption is assessed in the same way as for the case of the simple linear
 regression model, so we will go through another exercise at this point. 
+
+### Linearity and additivity
+Recall that this assumption states that our outcome variable has a linear, 
+additive relationship with the explanatory variables. 
+
+The linearity component is assessed in the same way as in the simple
+linear regression case. For example, recall that the relationship between
+combined diastolic blood pressure (`BPDiaAve`) and age in months (`AgeMonths`)
+was curved. Adding a squared term to the model helped us to model this
+non-linear relationship. We can add a `Sex` term to fit separate
+non-linear curves to this data:
+
+
+~~~
+BPDiaAve_AgeMonthsSQ_Sex <- lm(BPDiaAve ~ AgeMonths + I(AgeMonths^2) + Sex, data = dat)
+interact_plot(BPDiaAve_AgeMonthsSQ_Sex, pred = AgeMonths, modx = Sex,
+            plot.points = TRUE, interval = TRUE,
+            point.size = 0.7) +
+  ylab("Combined diastolic blood pressure") +
+  xlab("Age in Months") 
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-04-non-linear interaction BPDiaAve AgeMonths Sex-1.png" title="plot of chunk non-linear interaction BPDiaAve AgeMonths Sex" alt="plot of chunk non-linear interaction BPDiaAve AgeMonths Sex" width="612" style="display: block; margin: auto;" />
+
+The non-linear relationship has now been modeled separately for levels
+of a categorical variable. 
+
+Recall that the additivity component of the linearity and additivity assumption 
+means that the effect of any explanatory variable on the outcome variable does 
+not depend on another explanatory variable in the model. In other words, that 
+our model includes all necessary interactions between explanatory variables. 
+In the above example, the additivity component does not appear to be violated:
+it does not look like the data requires an interaction between age and sex. 
+
 
 
 ~~~
