@@ -60,6 +60,39 @@ will be larger.
 > {: .solution}
 {: .challenge}
 
+## Assessing the assumptions of the multiple linear regression model
+We learned to assess six assumptions in the simple linear regression [episode](https://carpentries-incubator.github.io/simple-linear-regression-public-health/06-fitAndAssumptionSLR) 
+on model assumptions. These assumptions also hold in the multiple linear 
+regression context. Below we will practice assessing each of the six assumptions. 
+
+### Validity
+Recall that the validity assumption states that the model is appropriate 
+for the research question. Validity is assessed through three questions:
+
+A) Does the outcome variable reflect the *phenomenon of interest*?  
+B) Does the model include *all relevant explanatory variables*?     
+C) Does the model generalise to our *case of interest*?  
+
+>## Exercise
+> You are asked to use the `FEV1_Age_SmokeNow` model to answer the following research question:  
+> 
+> "Does the effect of age on FEV1 differ by smoking status in US adults?"  
+> 
+> Using the three points above, assess the validity of this model for
+> the research question. 
+> > ## Solution
+> A) The research question is on FEV1, which is our outcome variable. Therefore our outcome variable reflects the phenomenon of interest.   
+> B) Our research question asks whether the effect of age differs by smoking status, which can be tested using an interaction between `Age` and `SmokeNow`. Since our model does not include this interaction, our model does not include all relevant explanatory variables.    
+> C) Since the NHANES data was collected from individuals in the US, our model should generalise to our case of interest.  
+> {: .solution}
+{: .challenge}
+
+### Representativeness
+Recall that the representativeness assumption states that the sample is 
+representative of the population to which we are generalising our findings. This
+assumption is assessed in the same way as for the case of the simple linear
+regression model, so we will go through another exercise at this point. 
+
 ```{r}
 residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
                     fitted = fitted(BPSysAve_Age_Sex),
