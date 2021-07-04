@@ -31,7 +31,7 @@ dat <- NHANESraw %>%
             UrineVol2,
             UrineFlow2,
             PregnantNow)) %>% # remove variables which will not be used
-  select(-c(AgeMonths, Race3, 
+  select(-c(Race3, 
             Testosterone,
             TVHrsDay, 
             CompHrsDay,
@@ -62,4 +62,4 @@ dat <- nhanes_load_data(c("CBC_F"), "2009-2010") %>%
 
 rm(prop)
 
-#save(dat, file = "../bin/data.RData")
+#save(dat, file = "../../demonstration/dataCarp/multiple-linear-regression-public-health/bin/data.RData")
