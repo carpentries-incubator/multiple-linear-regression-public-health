@@ -15,5 +15,69 @@ source("../bin/chunk-options.R")
 #source("../bin/obtain_data.R")
 load("../bin/data.RData")
 knitr_fig_path("04-")
+library(dplyr)
+library(jtools)
+library(ggplot2)
+library(patchwork)
 ```
 
+In this episode we will check the fit and assumptions of multiple linear 
+regression models. We will use the extension to $R^2$ for multiple linear 
+regression models, the adjusted $R^2$ ($R^2_{adj}$). We will also learn
+to assess the six linear regression assumptions in the case of 
+multiple linear regression.
+
+## Measuring fit using $R^2_{adj}$
+In the simple linear regression [episode](https://carpentries-incubator.github.io/simple-linear-regression-public-health/06-fitAndAssumptionSLR) 
+on model assumptions we learned that $R^2$ quantifies 
+the proportion of variation in the outcome variable explained by the 
+explanatory variable. In the context of multiple linear regression, a
+caveat emerges to $R^2$: adding explanatory variables to our model will
+almost always increase $R^2$, even if the explanatory variables do not
+have relationships with the response variable. Therefore, when interpreting
+the output from `summ()`, look at the $R^2_{adj}$. This is an $R^2$ corrected
+for the number of variables in the model. In some cases, the adjusted and
+unadjusted metrics will be (near) equal. In other cases, the differences
+will be larger. 
+
+>## Exercise
+>Find the adjusted R-squared value for the `summ` output of our `Hemoglobin_Age_Sex` model from 
+>[episode 2](carpentries-incubator.github.io/multiple-linear-regression-public-health/02-contAndCatInt/).
+>What proportion of variation in hemoglobin is explained by age, sex and their interaction in our model? 
+>Does our model account for most of the variation in `Hemoglobin`?
+> > ## Solution
+> > ```{r R-squared challenge}
+> > Hemoglobin_Age_Sex <- dat %>%
+> >   filter(Age > 17) %>%
+> >   lm(formula = Hemoglobin ~ Age * Sex)
+> > 
+> > summ(Hemoglobin_Age_Sex, confint = TRUE, digits = 3)
+> > ```
+> > 
+> > Since $R^2_{adj} = 0.339$, our model accounts for approximately 34% of the variation in
+> > `Hemoglobin`. Our model explains 34% of the variation in `Hemoglobin`, which
+> > a model that always predicts the mean would not. 
+> {: .solution}
+{: .challenge}
+
+```{r}
+residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
+                    fitted = fitted(BPSysAve_Age_Sex),
+                    height = BPSysAve_Age_Sex$model$Age,
+                    sex = BPSysAve_Age_Sex$model$Sex)
+
+p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+
+p2 <- ggplot(residualData, aes(x = height, y = resid)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+
+p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
+  geom_violin() + 
+  geom_jitter(alpha = 0.1, width = 0.2) 
+
+
+p1 + p2 + p3
+```

@@ -14,3 +14,146 @@ execises: 10
 
 
 
+In this episode we will check the fit and assumptions of multiple linear 
+regression models. We will use the extension to $R^2$ for multiple linear 
+regression models, the adjusted $R^2$ ($R^2_{adj}$). We will also learn
+to assess the six linear regression assumptions in the case of 
+multiple linear regression.
+
+## Measuring fit using $R^2_{adj}$
+In the simple linear regression [episode](https://carpentries-incubator.github.io/simple-linear-regression-public-health/06-fitAndAssumptionSLR) 
+on model assumptions we learned that $R^2$ quantifies 
+the proportion of variation in the outcome variable explained by the 
+explanatory variable. In the context of multiple linear regression, a
+caveat emerges to $R^2$: adding explanatory variables to our model will
+almost always increase $R^2$, even if the explanatory variables do not
+have relationships with the response variable. Therefore, when interpreting
+the output from `summ()`, look at the $R^2_{adj}$. This is an $R^2$ corrected
+for the number of variables in the model. In some cases, the adjusted and
+unadjusted metrics will be (near) equal. In other cases, the differences
+will be larger. 
+
+>## Exercise
+>Find the adjusted R-squared value for the `summ` output of our `Hemoglobin_Age_Sex` model from 
+>[episode 2](carpentries-incubator.github.io/multiple-linear-regression-public-health/02-contAndCatInt/).
+>What proportion of variation in hemoglobin is explained by age, sex and their interaction in our model? 
+>Does our model account for most of the variation in `Hemoglobin`?
+> > ## Solution
+> > 
+> > ~~~
+> > Hemoglobin_Age_Sex <- dat %>%
+> >   filter(Age > 17) %>%
+> >   lm(formula = Hemoglobin ~ Age * Sex)
+> > 
+> > summ(Hemoglobin_Age_Sex, confint = TRUE, digits = 3)
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > MODEL INFO:
+> > Observations: 5995 (502 missing obs. deleted)
+> > Dependent Variable: Hemoglobin
+> > Type: OLS linear regression 
+> > 
+> > MODEL FIT:
+> > F(3,5991) = 1026.313, p = 0.000
+> > R² = 0.339
+> > Adj. R² = 0.339 
+> > 
+> > Standard errors: OLS
+> > --------------------------------------------------------------
+> >                       Est.     2.5%    97.5%    t val.       p
+> > ----------------- -------- -------- -------- --------- -------
+> > (Intercept)         13.294   13.175   13.413   219.699   0.000
+> > Age                  0.001   -0.001    0.003     0.684   0.494
+> > Sexmale              2.757    2.587    2.927    31.852   0.000
+> > Age:Sexmale         -0.023   -0.026   -0.020   -13.938   0.000
+> > --------------------------------------------------------------
+> > ~~~
+> > {: .output}
+> > 
+> > Since $R^2_{adj} = 0.339$, our model accounts for approximately 34% of the variation in
+> > `Hemoglobin`. Our model explains 34% of the variation in `Hemoglobin`, which
+> > a model that always predicts the mean would not. 
+> {: .solution}
+{: .challenge}
+
+
+~~~
+residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
+                    fitted = fitted(BPSysAve_Age_Sex),
+                    height = BPSysAve_Age_Sex$model$Age,
+                    sex = BPSysAve_Age_Sex$model$Sex)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in resid(BPSysAve_Age_Sex): object 'BPSysAve_Age_Sex' not found
+~~~
+{: .error}
+
+
+
+~~~
+p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in ggplot(residualData, aes(x = fitted, y = resid)): object 'residualData' not found
+~~~
+{: .error}
+
+
+
+~~~
+p2 <- ggplot(residualData, aes(x = height, y = resid)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in ggplot(residualData, aes(x = height, y = resid)): object 'residualData' not found
+~~~
+{: .error}
+
+
+
+~~~
+p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
+  geom_violin() + 
+  geom_jitter(alpha = 0.1, width = 0.2) 
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in ggplot(residualData, aes(x = sex, y = resid)): object 'residualData' not found
+~~~
+{: .error}
+
+
+
+~~~
+p1 + p2 + p3
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'p1' not found
+~~~
+{: .error}
