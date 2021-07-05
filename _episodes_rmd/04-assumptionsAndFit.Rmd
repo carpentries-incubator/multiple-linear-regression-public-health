@@ -5,7 +5,11 @@ objectives:
   - Use the adjusted R squared value as a measure of model fit.
   - Assess whether the assumptions of the multiple linear regression model have been violated.
 keypoints:
+  - The adjusted R squared measure ensures that the metric does not increase simply due to the addition of a variable. The variable needs increase model fit for the adjusted R squared to increase.
+  - The same assumptions hold for simple and multiple linear regression, however more steps are involved in the assessment of the assumptions in the context of multiple linear regression. 
 questions:
+  - Why is the adjusted R squared used, instead of the standard R squared, when working with multiple linear regression?
+  - What are the six assumptions of multiple linear regression and how are they assessed?
 teaching: 10
 execises: 10
 ---
@@ -196,7 +200,7 @@ by the levels of a categorical variable.
 
 For example, below we create the diagnostic plots for our `Hemoglobin_Age_Sex` 
 model. We create plots of residuals vs. fitted (`p1`), residuals vs. age (`p2`)
-and residuals vs sex (`p3`). Notice that in the residuals vs. age plot, we colour
+and residuals vs. sex (`p3`). Notice that in the residuals vs. age plot, we colour
 points by sex using `colour = sex`. This allows us to assess whether the residuals
 are homogenously scattered across age, grouped by sex (i.e. at the interaction 
 level). 
