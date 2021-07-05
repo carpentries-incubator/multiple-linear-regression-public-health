@@ -7,7 +7,11 @@ objectives:
   - Use the adjusted R squared value as a measure of model fit.
   - Assess whether the assumptions of the multiple linear regression model have been violated.
 keypoints:
+  - The adjusted R squared measure ensures that the metric does not increase simply due to the addition of a variable. The variable needs increase model fit for the adjusted R squared to increase.
+  - The same assumptions hold for simple and multiple linear regression, however more steps are involved in the assessment of the assumptions in the context of multiple linear regression. 
 questions:
+  - Why is the adjusted R squared used, instead of the standard R squared, when working with multiple linear regression?
+  - What are the six assumptions of multiple linear regression and how are they assessed?
 teaching: 10
 execises: 10
 ---
@@ -112,7 +116,7 @@ C) Does the model generalise to our *case of interest*?
 Recall that the representativeness assumption states that the sample is 
 representative of the population to which we are generalising our findings. This
 assumption is assessed in the same way as for the case of the simple linear
-regression model, so we will go through another exercise at this point. 
+regression model, so we will not go through another exercise at this point. 
 
 ### Linearity and additivity
 Recall that this assumption states that our outcome variable has a linear, 
@@ -173,7 +177,8 @@ without the interaction using the tools discussed in this episode.
 > <img src="../fig/rmd-04-non-linearity challenge intro-1.png" title="plot of chunk non-linearity challenge intro" alt="plot of chunk non-linearity challenge intro" width="612" style="display: block; margin: auto;" />
 >
 > Extend this model by adding separate intercepts 
-> for the levels of the `Sex` variable. 
+> for the levels of the `Sex` variable. Visualise the model
+> using `interact_plot()`. 
 > 
 > > ## Solution
 > > 
@@ -194,99 +199,97 @@ without the interaction using the tools discussed in this episode.
 {: .challenge}
 
 ### Independent errors
-Recall that two common types of non-independence, and their solutions, are:
-
-* Observations in our data can be grouped. If there are a few levels in our grouping variable (say, less than 6) then we might choose to include the grouping variable as an explanatory variable in our model. If the grouping variable has more levels, we may choose to include the variable as a random effect, a component of mixed effect models (not discussed here).
-* Our data contains repeated measurements on the same individuals. This can be overcome using random effects, which are a component of mixed effects models (not discussed here).
+Recall that when observations in our data are grouped, this can result in a violation of the independent errors assumption. If there are a few levels in our grouping variable (say, less than 6) then we may overcome the violation by including the grouping variable as an explanatory variable in our model. If the grouping variable has many more levels, we may opt for a modelling approach more complex than multiple linear regression. 
 
 >## Exercise
-> In which of the following scenarios are we at risk of violating the independent errors assumption? In those cases, should we be working with an extra explanatory variable or with a random effect?
+> In which of the following scenarios are we at risk of violating the independent errors assumption? In those cases, should we be working with an extra explanatory variable?
 > 
-> A) We are modelling the effect of average daily calorie intake on BMI in the adult UK population. We have one observation per participant and participants are known to belong to one of ten income brackets.  
+> A) We are modelling the effect of average daily calorie intake on BMI in the adult UK population. We have one observation per participant and participants are known to belong to one of five income brackets.  
 > B) We are modelling the effect of age on grip strength in adult females in the UK. Whether participants are physically active is known.  
 > C) We are asking whether people's sprinting speed is increased after partaking in an athletics course. Our data includes measurements of 100 participant's sprinting speed before and after the course. 
 > 
 > > ## Solution
-> > A) Since we have multiple observations per income bracket, our observations are not independent. There are ten levels in the income bracket variable, so we may chose to model it through a random effect.  
-> > B) Since we have multiple observations per level of physical activity, are observations are not independent. Since there are two levels in our physical activity variable, we could use physical activity as an explanatory variable in our model.   
-> > C) This data has two levels of grouping: within individuals (two measurements per individual) and timing (before/after the course). While timing can be included as an explanatory variable (two levels), individuals would need to be included as a random effect (100 levels). 
+> > A) Since we have multiple observations per income bracket, our observations are not independent. There are five levels in the income bracket variable, so we may chose to include income bracket as an explanatory variable.  
+> > B) Since we have multiple observations per level of physical activity, our observations are not independent. Since there are two levels in our physical activity variable, we could use physical activity as an explanatory variable in our model.   
+> > C) This data has two levels of grouping: within individuals (two measurements per individual) and timing (before/after the course). While timing can be included as an explanatory variable (two levels), it would not be appropriate to include individuals as an explanatory variable (100 levels). In this scenario we would opt for a more complex modelling approach (a mixed effect model).  
 > {: .solution}
 {: .challenge}
 
+### Equal variance of errors (homoscedasticity)
+This assumption states that the magnitude of variation in the residuals is not 
+different across the fitted values or any explanatory variable. 
+Importantly, when interactions are included in the model, the scale of the
+residuals should be checked at the interaction level. In the case of an
+interaction between continuous and categorical explanatory variables, this means
+colouring the points in the residuals vs explanatory variable plot 
+by the levels of a categorical variable.
+
+For example, below we create the diagnostic plots for our `Hemoglobin_Age_Sex` 
+model. We create plots of residuals vs. fitted (`p1`), residuals vs. age (`p2`)
+and residuals vs. sex (`p3`). Notice that in the residuals vs. age plot, we colour
+points by sex using `colour = sex`. This allows us to assess whether the residuals
+are homogenously scattered across age, grouped by sex (i.e. at the interaction 
+level). 
+
+
 
 ~~~
-residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
-                    fitted = fitted(BPSysAve_Age_Sex),
-                    height = BPSysAve_Age_Sex$model$Age,
-                    sex = BPSysAve_Age_Sex$model$Sex)
-~~~
-{: .language-r}
+residualData <- tibble(resid = resid(Hemoglobin_Age_Sex),
+                   fitted = fitted(Hemoglobin_Age_Sex),
+                   age = Hemoglobin_Age_Sex$model$Age,
+                   sex = Hemoglobin_Age_Sex$model$Sex)
 
-
-
-~~~
-Error in resid(BPSysAve_Age_Sex): object 'BPSysAve_Age_Sex' not found
-~~~
-{: .error}
-
-
-
-~~~
 p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-~~~
-{: .language-r}
+ geom_point(alpha = 0.3) +
+ geom_smooth()
 
+p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
+ geom_point(alpha = 0.3) +
+ geom_smooth()
 
-
-~~~
-Error in ggplot(residualData, aes(x = fitted, y = resid)): object 'residualData' not found
-~~~
-{: .error}
-
-
-
-~~~
-p2 <- ggplot(residualData, aes(x = height, y = resid)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in ggplot(residualData, aes(x = height, y = resid)): object 'residualData' not found
-~~~
-{: .error}
-
-
-
-~~~
 p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
-  geom_violin() + 
-  geom_jitter(alpha = 0.1, width = 0.2) 
-~~~
-{: .language-r}
+ geom_violin() + 
+ geom_jitter(alpha = 0.3, width = 0.2) 
 
 
-
-~~~
-Error in ggplot(residualData, aes(x = sex, y = resid)): object 'residualData' not found
-~~~
-{: .error}
-
-
-
-~~~
 p1 + p2 + p3
 ~~~
 {: .language-r}
 
+<img src="../fig/rmd-04-homoscedasticity example-1.png" title="plot of chunk homoscedasticity example" alt="plot of chunk homoscedasticity example" width="612" style="display: block; margin: auto;" />
 
 
-~~~
-Error in eval(expr, envir, enclos): object 'p1' not found
-~~~
-{: .error}
+>## Exercise
+> A colleague is studying testosterone levels in children. They have fit a 
+> multiple linear regression model of testosterone as a function of age, 
+> sex and their interaction. The data and their model look as shown below:
+> 
+> <img src="../fig/rmd-04-testosterone challenge interact_plot-1.png" title="plot of chunk testosterone challenge interact_plot" alt="plot of chunk testosterone challenge interact_plot" width="612" style="display: block; margin: auto;" />
+> 
+> 
+> This colleague approaches you for your thoughts on the following diagnostic
+> plots, used to assess the homoscedasticity assumption. 
+> 
+> <img src="../fig/rmd-04-diagnostic plots testosterone-1.png" title="plot of chunk diagnostic plots testosterone" alt="plot of chunk diagnostic plots testosterone" width="612" style="display: block; margin: auto;" />
+> 
+> A) What issues can you identify in the diagnostic plots?  
+> B) How could the diagnostic plots be improved to be more informative?
+> 
+> > ## Solution
+> > A) The residuals appear to fan out as the fitted values or age increase. 
+> > The residuals also do not appear to be homogenous across sex, as the violin
+> > plot for males is much longer than for females.  
+> > B) The points in the scatterplot of age could be coloured by sex to assess
+> > the homoscedasticity assumption at the interaction level:
+> > <img src="../fig/rmd-04-updated diagnostic plot testosterone-1.png" title="plot of chunk updated diagnostic plot testosterone" alt="plot of chunk updated diagnostic plot testosterone" width="612" style="display: block; margin: auto;" />
+> > 
+> {: .solution}
+{: .challenge}
+
+### Normality of errors 
+Recall that this assumption states that the errors follow a Normal distribution. 
+When this assumption is strongly violated, 
+predictions from the model are less reliable. 
+Small deviations from normality may pose less of an issue. 
+This assumption is assessed in the same way as for the case of the simple linear
+regression model, so we will not go through another exercise at this point. 
