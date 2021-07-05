@@ -147,7 +147,8 @@ without the interaction using the tools discussed in this episode.
 > ```
 >
 > Extend this model by adding separate intercepts 
-> for the levels of the `Sex` variable. 
+> for the levels of the `Sex` variable. Visualise the model
+> using `interact_plot()`. 
 > 
 > > ## Solution
 > > ```{r non-linearity challenge part 2, warning = FALSE, message = FALSE}
@@ -180,17 +181,90 @@ Recall that when observations in our data are grouped, this can result in a viol
 > {: .solution}
 {: .challenge}
 
+### Equal variance of errors (homoscedasticity)
+
+
+>## Exercise
+> A colleague is studying testosterone levels in children. They have fit a 
+> multiple linear regression model of testosterone as a function of age, 
+> sex and their interaction. The data and their model look as shown below:
+> 
+> ```{r testosterone challenge interact_plot, echo = FALSE}
+> model <- dat %>%
+>   filter(between(Age, 10, 18)) %>%
+>   lm(formula = Testosterone ~ Age * Sex)
+>   
+> interact_plot(model, pred = Age, modx = Sex,
+>             plot.points = TRUE, interval = TRUE,
+>             point.size = 0.7) +
+>   ylab("Testosterone") +
+>   xlab("Age") 
+> ```
+> 
+> 
+> This colleague approaches you for your thoughts on the following diagnostic
+> plots, used to assess the homoscedasticity assumption. 
+> 
+> ```{r diagnostic plots testosterone, echo = FALSE, message = FALSE}
+> residualData <- tibble(resid = resid(model),
+>                     fitted = fitted(model),
+>                     age = model$model$Age,
+>                     sex = model$model$Sex)
+> 
+> p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
+>   geom_point(alpha = 0.3) +
+>   geom_smooth()
+> 
+> p2 <- ggplot(residualData, aes(x = age, y = resid)) +
+>   geom_point(alpha = 0.3) +
+>   geom_smooth()
+> 
+> p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
+>   geom_violin() + 
+>   geom_jitter(alpha = 0.3, width = 0.2) 
+> 
+> 
+> p1 + p2 + p3
+> ```
+> 
+> A) What issues can you identify in the diagnostic plots?  
+> B) How could the diagnostic plots be improved to be more informative?
+> 
+> > ## Solution
+> > A) The residuals appear to fan out as the fitted values or age increase. 
+> > The residuals also do not appear to be homogenous across sex, as the violin
+> > plot for males is much longer than for females.  
+> > B) The points in the scatterplots could be coloured by sex:
+> > ```{r updated diagnostic plot testosterone, echo = FALSE, message = FALSE}
+> > p1 <- ggplot(residualData, aes(x = fitted, y = resid, colour = sex)) +
+> >   geom_point(alpha = 0.3) +
+> >   geom_smooth()
+> > 
+> > p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
+> >  geom_point(alpha = 0.3) +
+> >  geom_smooth()
+> > 
+> > p1 + p2 + p3
+> > ```
+> > 
+> {: .solution}
+{: .challenge}
+
 ```{r}
+BPSysAve_Age_Sex <- dat %>%
+  filter(Age > 17) %>%
+  lm(formula = BPSysAve ~ AgeMonths * Sex)
+
 residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
                     fitted = fitted(BPSysAve_Age_Sex),
-                    height = BPSysAve_Age_Sex$model$Age,
+                    age = BPSysAve_Age_Sex$model$Age,
                     sex = BPSysAve_Age_Sex$model$Sex)
 
 p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
   geom_point(alpha = 0.1) +
   geom_smooth()
 
-p2 <- ggplot(residualData, aes(x = height, y = resid)) +
+p2 <- ggplot(residualData, aes(x = age, y = resid)) +
   geom_point(alpha = 0.1) +
   geom_smooth()
 
@@ -200,4 +274,36 @@ p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
 
 
 p1 + p2 + p3
+
+dat %>%
+  filter(Age < 19) %>%
+  ggplot(aes(x = Age, y = Testosterone, colour = Sex)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(method = "lm") #+
+  facet_wrap(~Sex)
+
+test <- dat %>%
+  filter(Age < 19) %>%
+  lm(formula = Testosterone ~ Age * Sex)
+
+residualData <- tibble(resid = resid(test),
+                    fitted = fitted(test),
+                    age = test$model$Age,
+                    sex = test$model$Sex)
+
+p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+
+p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+
+p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
+  geom_violin() + 
+  geom_jitter(alpha = 0.1, width = 0.2) 
+
+
+p1 + p2 + p3
+
 ```

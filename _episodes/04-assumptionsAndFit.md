@@ -173,7 +173,8 @@ without the interaction using the tools discussed in this episode.
 > <img src="../fig/rmd-04-non-linearity challenge intro-1.png" title="plot of chunk non-linearity challenge intro" alt="plot of chunk non-linearity challenge intro" width="612" style="display: block; margin: auto;" />
 >
 > Extend this model by adding separate intercepts 
-> for the levels of the `Sex` variable. 
+> for the levels of the `Sex` variable. Visualise the model
+> using `interact_plot()`. 
 > 
 > > ## Solution
 > > 
@@ -210,73 +211,59 @@ Recall that when observations in our data are grouped, this can result in a viol
 > {: .solution}
 {: .challenge}
 
+### Equal variance of errors (homoscedasticity)
+
+
+>## Exercise
+> A colleague is studying testosterone levels in children. They have fit a 
+> multiple linear regression model of testosterone as a function of age, 
+> sex and their interaction. The data and their model look as shown below:
+> 
+> <img src="../fig/rmd-04-testosterone challenge interact_plot-1.png" title="plot of chunk testosterone challenge interact_plot" alt="plot of chunk testosterone challenge interact_plot" width="612" style="display: block; margin: auto;" />
+> 
+> 
+> This colleague approaches you for your thoughts on the following diagnostic
+> plots, used to assess the homoscedasticity assumption. 
+> 
+> <img src="../fig/rmd-04-diagnostic plots testosterone-1.png" title="plot of chunk diagnostic plots testosterone" alt="plot of chunk diagnostic plots testosterone" width="612" style="display: block; margin: auto;" />
+> 
+> A) What issues can you identify in the diagnostic plots?  
+> B) How could the diagnostic plots be improved to be more informative?
+> 
+> > ## Solution
+> > A) The residuals appear to fan out as the fitted values or age increase. 
+> > The residuals also do not appear to be homogenous across sex, as the violin
+> > plot for males is much longer than for females.  
+> > B) The points in the scatterplots could be coloured by sex:
+> > <img src="../fig/rmd-04-updated diagnostic plot testosterone-1.png" title="plot of chunk updated diagnostic plot testosterone" alt="plot of chunk updated diagnostic plot testosterone" width="612" style="display: block; margin: auto;" />
+> > 
+> {: .solution}
+{: .challenge}
+
 
 ~~~
+BPSysAve_Age_Sex <- dat %>%
+  filter(Age > 17) %>%
+  lm(formula = BPSysAve ~ AgeMonths * Sex)
+
 residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
                     fitted = fitted(BPSysAve_Age_Sex),
-                    height = BPSysAve_Age_Sex$model$Age,
+                    age = BPSysAve_Age_Sex$model$Age,
                     sex = BPSysAve_Age_Sex$model$Sex)
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in resid(BPSysAve_Age_Sex): object 'BPSysAve_Age_Sex' not found
-~~~
-{: .error}
-
-
-
-~~~
 p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
   geom_point(alpha = 0.1) +
   geom_smooth()
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in ggplot(residualData, aes(x = fitted, y = resid)): object 'residualData' not found
-~~~
-{: .error}
-
-
-
-~~~
-p2 <- ggplot(residualData, aes(x = height, y = resid)) +
+p2 <- ggplot(residualData, aes(x = age, y = resid)) +
   geom_point(alpha = 0.1) +
   geom_smooth()
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in ggplot(residualData, aes(x = height, y = resid)): object 'residualData' not found
-~~~
-{: .error}
-
-
-
-~~~
 p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
   geom_violin() + 
   geom_jitter(alpha = 0.1, width = 0.2) 
-~~~
-{: .language-r}
 
 
-
-~~~
-Error in ggplot(residualData, aes(x = sex, y = resid)): object 'residualData' not found
-~~~
-{: .error}
-
-
-
-~~~
 p1 + p2 + p3
 ~~~
 {: .language-r}
@@ -284,6 +271,113 @@ p1 + p2 + p3
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'p1' not found
+`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 ~~~
-{: .error}
+{: .output}
+
+<img src="../fig/rmd-04-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
+
+~~~
+dat %>%
+  filter(Age < 19) %>%
+  ggplot(aes(x = Age, y = Testosterone, colour = Sex)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(method = "lm") #+
+~~~
+{: .language-r}
+
+
+
+~~~
+`geom_smooth()` using formula 'y ~ x'
+~~~
+{: .output}
+
+
+
+~~~
+Warning: Removed 2892 rows containing non-finite values (stat_smooth).
+~~~
+{: .warning}
+
+
+
+~~~
+Warning: Removed 2892 rows containing missing values (geom_point).
+~~~
+{: .warning}
+
+<img src="../fig/rmd-04-unnamed-chunk-2-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
+
+~~~
+  facet_wrap(~Sex)
+~~~
+{: .language-r}
+
+
+
+~~~
+<ggproto object: Class FacetWrap, Facet, gg>
+    compute_layout: function
+    draw_back: function
+    draw_front: function
+    draw_labels: function
+    draw_panels: function
+    finish_data: function
+    init_scales: function
+    map_data: function
+    params: list
+    setup_data: function
+    setup_params: function
+    shrink: TRUE
+    train_scales: function
+    vars: function
+    super:  <ggproto object: Class FacetWrap, Facet, gg>
+~~~
+{: .output}
+
+
+
+~~~
+test <- dat %>%
+  filter(Age < 19) %>%
+  lm(formula = Testosterone ~ Age * Sex)
+
+residualData <- tibble(resid = resid(test),
+                    fitted = fitted(test),
+                    age = test$model$Age,
+                    sex = test$model$Sex)
+
+p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+
+p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+
+p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
+  geom_violin() + 
+  geom_jitter(alpha = 0.1, width = 0.2) 
+
+
+p1 + p2 + p3
+~~~
+{: .language-r}
+
+
+
+~~~
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+~~~
+{: .output}
+
+
+
+~~~
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
+~~~
+{: .output}
+
+<img src="../fig/rmd-04-unnamed-chunk-2-3.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
