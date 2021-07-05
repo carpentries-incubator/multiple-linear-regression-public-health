@@ -112,7 +112,7 @@ C) Does the model generalise to our *case of interest*?
 Recall that the representativeness assumption states that the sample is 
 representative of the population to which we are generalising our findings. This
 assumption is assessed in the same way as for the case of the simple linear
-regression model, so we will go through another exercise at this point. 
+regression model, so we will not go through another exercise at this point. 
 
 ### Linearity and additivity
 Recall that this assumption states that our outcome variable has a linear, 
@@ -282,3 +282,10 @@ p1 + p2 + p3
 > {: .solution}
 {: .challenge}
 
+### Normality of errors 
+Recall that this assumption states that the errors follow a Normal distribution. 
+When this assumption is strongly violated, 
+predictions from the model are less reliable. 
+Small deviations from normality may pose less of an issue. 
+This assumption is assessed in the same way as for the case of the simple linear
+regression model, so we will not go through another exercise at this point. 
