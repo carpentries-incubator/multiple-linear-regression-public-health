@@ -20,6 +20,10 @@ library(jtools)
 library(interactions)
 library(ggplot2)
 library(patchwork)
+
+Hemoglobin_Age_Sex <- dat %>%
+  filter(Age > 17) %>%
+  lm(formula = Hemoglobin ~ Age * Sex)
 ```
 
 In this episode we will check the fit and assumptions of multiple linear 
@@ -182,6 +186,43 @@ Recall that when observations in our data are grouped, this can result in a viol
 {: .challenge}
 
 ### Equal variance of errors (homoscedasticity)
+This assumption states that the magnitude of variation in the residuals is not 
+different across the fitted values or any explanatory variable. 
+Importantly, when interactions are included in the model, the scale of the
+residuals should be checked at the interaction level. In the case of an
+interaction between continuous and categorical explanatory variables, this means
+colouring the points in the residuals vs explanatory variable plot 
+by the levels of a categorical variable.
+
+For example, below we create the diagnostic plots for our `Hemoglobin_Age_Sex` 
+model. We create plots of residuals vs. fitted (`p1`), residuals vs. age (`p2`)
+and residuals vs sex (`p3`). Notice that in the residuals vs. age plot, we colour
+points by sex using `colour = sex`. This allows us to assess whether the residuals
+are homogenously scattered across age, grouped by sex (i.e. at the interaction 
+level). 
+
+
+```{r homoscedasticity example, message = FALSE}
+residualData <- tibble(resid = resid(Hemoglobin_Age_Sex),
+                   fitted = fitted(Hemoglobin_Age_Sex),
+                   age = Hemoglobin_Age_Sex$model$Age,
+                   sex = Hemoglobin_Age_Sex$model$Sex)
+
+p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
+ geom_point(alpha = 0.3) +
+ geom_smooth()
+
+p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
+ geom_point(alpha = 0.3) +
+ geom_smooth()
+
+p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
+ geom_violin() + 
+ geom_jitter(alpha = 0.3, width = 0.2) 
+
+
+p1 + p2 + p3
+```
 
 
 >## Exercise
@@ -234,7 +275,8 @@ Recall that when observations in our data are grouped, this can result in a viol
 > > A) The residuals appear to fan out as the fitted values or age increase. 
 > > The residuals also do not appear to be homogenous across sex, as the violin
 > > plot for males is much longer than for females.  
-> > B) The points in the scatterplots could be coloured by sex:
+> > B) The points in the scatterplot of age could be coloured by sex to assess
+> > the homoscedasticity assumption at the interaction level:
 > > ```{r updated diagnostic plot testosterone, echo = FALSE, message = FALSE}
 > > p1 <- ggplot(residualData, aes(x = fitted, y = resid, colour = sex)) +
 > >   geom_point(alpha = 0.3) +
@@ -250,60 +292,3 @@ Recall that when observations in our data are grouped, this can result in a viol
 > {: .solution}
 {: .challenge}
 
-```{r}
-BPSysAve_Age_Sex <- dat %>%
-  filter(Age > 17) %>%
-  lm(formula = BPSysAve ~ AgeMonths * Sex)
-
-residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
-                    fitted = fitted(BPSysAve_Age_Sex),
-                    age = BPSysAve_Age_Sex$model$Age,
-                    sex = BPSysAve_Age_Sex$model$Sex)
-
-p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-
-p2 <- ggplot(residualData, aes(x = age, y = resid)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-
-p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
-  geom_violin() + 
-  geom_jitter(alpha = 0.1, width = 0.2) 
-
-
-p1 + p2 + p3
-
-dat %>%
-  filter(Age < 19) %>%
-  ggplot(aes(x = Age, y = Testosterone, colour = Sex)) +
-  geom_point(alpha = 0.2) +
-  geom_smooth(method = "lm") #+
-  facet_wrap(~Sex)
-
-test <- dat %>%
-  filter(Age < 19) %>%
-  lm(formula = Testosterone ~ Age * Sex)
-
-residualData <- tibble(resid = resid(test),
-                    fitted = fitted(test),
-                    age = test$model$Age,
-                    sex = test$model$Sex)
-
-p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-
-p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-
-p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
-  geom_violin() + 
-  geom_jitter(alpha = 0.1, width = 0.2) 
-
-
-p1 + p2 + p3
-
-```

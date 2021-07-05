@@ -212,6 +212,47 @@ Recall that when observations in our data are grouped, this can result in a viol
 {: .challenge}
 
 ### Equal variance of errors (homoscedasticity)
+This assumption states that the magnitude of variation in the residuals is not 
+different across the fitted values or any explanatory variable. 
+Importantly, when interactions are included in the model, the scale of the
+residuals should be checked at the interaction level. In the case of an
+interaction between continuous and categorical explanatory variables, this means
+colouring the points in the residuals vs explanatory variable plot 
+by the levels of a categorical variable.
+
+For example, below we create the diagnostic plots for our `Hemoglobin_Age_Sex` 
+model. We create plots of residuals vs. fitted (`p1`), residuals vs. age (`p2`)
+and residuals vs sex (`p3`). Notice that in the residuals vs. age plot, we colour
+points by sex using `colour = sex`. This allows us to assess whether the residuals
+are homogenously scattered across age, grouped by sex (i.e. at the interaction 
+level). 
+
+
+
+~~~
+residualData <- tibble(resid = resid(Hemoglobin_Age_Sex),
+                   fitted = fitted(Hemoglobin_Age_Sex),
+                   age = Hemoglobin_Age_Sex$model$Age,
+                   sex = Hemoglobin_Age_Sex$model$Sex)
+
+p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
+ geom_point(alpha = 0.3) +
+ geom_smooth()
+
+p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
+ geom_point(alpha = 0.3) +
+ geom_smooth()
+
+p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
+ geom_violin() + 
+ geom_jitter(alpha = 0.3, width = 0.2) 
+
+
+p1 + p2 + p3
+~~~
+{: .language-r}
+
+<img src="../fig/rmd-04-homoscedasticity example-1.png" title="plot of chunk homoscedasticity example" alt="plot of chunk homoscedasticity example" width="612" style="display: block; margin: auto;" />
 
 
 >## Exercise
@@ -234,150 +275,10 @@ Recall that when observations in our data are grouped, this can result in a viol
 > > A) The residuals appear to fan out as the fitted values or age increase. 
 > > The residuals also do not appear to be homogenous across sex, as the violin
 > > plot for males is much longer than for females.  
-> > B) The points in the scatterplots could be coloured by sex:
+> > B) The points in the scatterplot of age could be coloured by sex to assess
+> > the homoscedasticity assumption at the interaction level:
 > > <img src="../fig/rmd-04-updated diagnostic plot testosterone-1.png" title="plot of chunk updated diagnostic plot testosterone" alt="plot of chunk updated diagnostic plot testosterone" width="612" style="display: block; margin: auto;" />
 > > 
 > {: .solution}
 {: .challenge}
 
-
-~~~
-BPSysAve_Age_Sex <- dat %>%
-  filter(Age > 17) %>%
-  lm(formula = BPSysAve ~ AgeMonths * Sex)
-
-residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
-                    fitted = fitted(BPSysAve_Age_Sex),
-                    age = BPSysAve_Age_Sex$model$Age,
-                    sex = BPSysAve_Age_Sex$model$Sex)
-
-p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-
-p2 <- ggplot(residualData, aes(x = age, y = resid)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-
-p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
-  geom_violin() + 
-  geom_jitter(alpha = 0.1, width = 0.2) 
-
-
-p1 + p2 + p3
-~~~
-{: .language-r}
-
-
-
-~~~
-`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
-`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
-~~~
-{: .output}
-
-<img src="../fig/rmd-04-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
-
-~~~
-dat %>%
-  filter(Age < 19) %>%
-  ggplot(aes(x = Age, y = Testosterone, colour = Sex)) +
-  geom_point(alpha = 0.2) +
-  geom_smooth(method = "lm") #+
-~~~
-{: .language-r}
-
-
-
-~~~
-`geom_smooth()` using formula 'y ~ x'
-~~~
-{: .output}
-
-
-
-~~~
-Warning: Removed 2892 rows containing non-finite values (stat_smooth).
-~~~
-{: .warning}
-
-
-
-~~~
-Warning: Removed 2892 rows containing missing values (geom_point).
-~~~
-{: .warning}
-
-<img src="../fig/rmd-04-unnamed-chunk-2-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
-
-~~~
-  facet_wrap(~Sex)
-~~~
-{: .language-r}
-
-
-
-~~~
-<ggproto object: Class FacetWrap, Facet, gg>
-    compute_layout: function
-    draw_back: function
-    draw_front: function
-    draw_labels: function
-    draw_panels: function
-    finish_data: function
-    init_scales: function
-    map_data: function
-    params: list
-    setup_data: function
-    setup_params: function
-    shrink: TRUE
-    train_scales: function
-    vars: function
-    super:  <ggproto object: Class FacetWrap, Facet, gg>
-~~~
-{: .output}
-
-
-
-~~~
-test <- dat %>%
-  filter(Age < 19) %>%
-  lm(formula = Testosterone ~ Age * Sex)
-
-residualData <- tibble(resid = resid(test),
-                    fitted = fitted(test),
-                    age = test$model$Age,
-                    sex = test$model$Sex)
-
-p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-
-p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
-  geom_point(alpha = 0.1) +
-  geom_smooth()
-
-p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
-  geom_violin() + 
-  geom_jitter(alpha = 0.1, width = 0.2) 
-
-
-p1 + p2 + p3
-~~~
-{: .language-r}
-
-
-
-~~~
-`geom_smooth()` using method = 'loess' and formula 'y ~ x'
-~~~
-{: .output}
-
-
-
-~~~
-`geom_smooth()` using method = 'loess' and formula 'y ~ x'
-~~~
-{: .output}
-
-<img src="../fig/rmd-04-unnamed-chunk-2-3.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="612" style="display: block; margin: auto;" />
