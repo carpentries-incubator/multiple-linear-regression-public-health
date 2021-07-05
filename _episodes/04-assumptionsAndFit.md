@@ -194,22 +194,19 @@ without the interaction using the tools discussed in this episode.
 {: .challenge}
 
 ### Independent errors
-Recall that two common types of non-independence, and their solutions, are:
-
-* Observations in our data can be grouped. If there are a few levels in our grouping variable (say, less than 6) then we might choose to include the grouping variable as an explanatory variable in our model. If the grouping variable has more levels, we may choose to include the variable as a random effect, a component of mixed effect models (not discussed here).
-* Our data contains repeated measurements on the same individuals. This can be overcome using random effects, which are a component of mixed effects models (not discussed here).
+Recall that when observations in our data are grouped, this can result in a violation of the independent errors assumption. If there are a few levels in our grouping variable (say, less than 6) then we may overcome the violation by including the grouping variable as an explanatory variable in our model. If the grouping variable has many more levels, we may opt for a modelling approach more complex than multiple linear regression. 
 
 >## Exercise
-> In which of the following scenarios are we at risk of violating the independent errors assumption? In those cases, should we be working with an extra explanatory variable or with a random effect?
+> In which of the following scenarios are we at risk of violating the independent errors assumption? In those cases, should we be working with an extra explanatory variable?
 > 
-> A) We are modelling the effect of average daily calorie intake on BMI in the adult UK population. We have one observation per participant and participants are known to belong to one of ten income brackets.  
+> A) We are modelling the effect of average daily calorie intake on BMI in the adult UK population. We have one observation per participant and participants are known to belong to one of five income brackets.  
 > B) We are modelling the effect of age on grip strength in adult females in the UK. Whether participants are physically active is known.  
 > C) We are asking whether people's sprinting speed is increased after partaking in an athletics course. Our data includes measurements of 100 participant's sprinting speed before and after the course. 
 > 
 > > ## Solution
-> > A) Since we have multiple observations per income bracket, our observations are not independent. There are ten levels in the income bracket variable, so we may chose to model it through a random effect.  
-> > B) Since we have multiple observations per level of physical activity, are observations are not independent. Since there are two levels in our physical activity variable, we could use physical activity as an explanatory variable in our model.   
-> > C) This data has two levels of grouping: within individuals (two measurements per individual) and timing (before/after the course). While timing can be included as an explanatory variable (two levels), individuals would need to be included as a random effect (100 levels). 
+> > A) Since we have multiple observations per income bracket, our observations are not independent. There are five levels in the income bracket variable, so we may chose to include income bracket as an explanatory variable.  
+> > B) Since we have multiple observations per level of physical activity, our observations are not independent. Since there are two levels in our physical activity variable, we could use physical activity as an explanatory variable in our model.   
+> > C) This data has two levels of grouping: within individuals (two measurements per individual) and timing (before/after the course). While timing can be included as an explanatory variable (two levels), it would not be appropriate to include individuals as an explanatory variable (100 levels). In this scenario we would opt for a more complex modelling approach (a mixed effect model).  
 > {: .solution}
 {: .challenge}
 
