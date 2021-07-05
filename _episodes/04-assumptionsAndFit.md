@@ -147,6 +147,51 @@ not depend on another explanatory variable in the model. In other words, that
 our model includes all necessary interactions between explanatory variables. 
 In the above example, the additivity component does not appear to be violated:
 it does not look like the data requires an interaction between age and sex. 
+However, to be sure of this we may compare the model fit of models with and
+without the interaction using the tools discussed in this episode.
+
+>## Exercise
+> In the example above we saw that a model with a squared explanatory variable 
+> can also include separate intercepts for levels of a categorical variable.  
+>
+> Recall out `child_logWeight_Height_lm` model from the previous lesson,
+> which modeled the relationship between the log of child weight
+> and child height:
+> 
+> 
+> ~~~
+> child_logWeight_Height_lm <- dat %>%
+>   filter(Age < 18) %>%
+>   lm(formula = log(Weight) ~ Height)
+> 
+> effect_plot(child_logWeight_Height_lm, pred = Height, 
+>                   plot.points = TRUE, interval = TRUE,
+>                   colors = c("red")) 
+> ~~~
+> {: .language-r}
+> 
+> <img src="../fig/rmd-04-non-linearity challenge intro-1.png" title="plot of chunk non-linearity challenge intro" alt="plot of chunk non-linearity challenge intro" width="612" style="display: block; margin: auto;" />
+>
+> Extend this model by adding separate intercepts 
+> for the levels of the `Sex` variable. 
+> 
+> > ## Solution
+> > 
+> > ~~~
+> > child_logWeight_Height_Sex <- dat %>%
+> >   filter(Age < 18) %>%
+> >   lm(formula = log(Weight) ~ Height + Sex)
+> > 
+> > interact_plot(child_logWeight_Height_Sex, pred = Height, modx = Sex,
+> >               plot.points = TRUE, interval = TRUE,
+> >               point.size = 0.7)
+> > ~~~
+> > {: .language-r}
+> > 
+> > <img src="../fig/rmd-04-non-linearity challenge part 2-1.png" title="plot of chunk non-linearity challenge part 2" alt="plot of chunk non-linearity challenge part 2" width="612" style="display: block; margin: auto;" />
+> > 
+> {: .solution}
+{: .challenge}
 
 
 
