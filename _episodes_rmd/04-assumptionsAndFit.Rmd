@@ -15,5 +15,192 @@ source("../bin/chunk-options.R")
 #source("../bin/obtain_data.R")
 load("../bin/data.RData")
 knitr_fig_path("04-")
+library(dplyr)
+library(jtools)
+library(interactions)
+library(ggplot2)
+library(patchwork)
 ```
 
+In this episode we will check the fit and assumptions of multiple linear 
+regression models. We will use the extension to $R^2$ for multiple linear 
+regression models, the adjusted $R^2$ ($R^2_{adj}$). We will also learn
+to assess the six linear regression assumptions in the case of 
+multiple linear regression.
+
+## Measuring fit using $R^2_{adj}$
+In the simple linear regression [episode](https://carpentries-incubator.github.io/simple-linear-regression-public-health/06-fitAndAssumptionSLR) 
+on model assumptions we learned that $R^2$ quantifies 
+the proportion of variation in the outcome variable explained by the 
+explanatory variable. In the context of multiple linear regression, a
+caveat emerges to $R^2$: adding explanatory variables to our model will
+almost always increase $R^2$, even if the explanatory variables do not
+have relationships with the response variable. Therefore, when interpreting
+the output from `summ()`, look at the $R^2_{adj}$. This is an $R^2$ corrected
+for the number of variables in the model. In some cases, the adjusted and
+unadjusted metrics will be (near) equal. In other cases, the differences
+will be larger. 
+
+>## Exercise
+>Find the adjusted R-squared value for the `summ` output of our `Hemoglobin_Age_Sex` model from 
+>[episode 2](carpentries-incubator.github.io/multiple-linear-regression-public-health/02-contAndCatInt/).
+>What proportion of variation in hemoglobin is explained by age, sex and their interaction in our model? 
+>Does our model account for most of the variation in `Hemoglobin`?
+> > ## Solution
+> > ```{r R-squared challenge}
+> > Hemoglobin_Age_Sex <- dat %>%
+> >   filter(Age > 17) %>%
+> >   lm(formula = Hemoglobin ~ Age * Sex)
+> > 
+> > summ(Hemoglobin_Age_Sex, confint = TRUE, digits = 3)
+> > ```
+> > 
+> > Since $R^2_{adj} = 0.339$, our model accounts for approximately 34% of the variation in
+> > `Hemoglobin`. Our model explains 34% of the variation in `Hemoglobin`, which
+> > a model that always predicts the mean would not. 
+> {: .solution}
+{: .challenge}
+
+## Assessing the assumptions of the multiple linear regression model
+We learned to assess six assumptions in the simple linear regression [episode](https://carpentries-incubator.github.io/simple-linear-regression-public-health/06-fitAndAssumptionSLR) 
+on model assumptions. These assumptions also hold in the multiple linear 
+regression context, although in some cases their assessment is a little more 
+extensive. Below we will practice assessing these assumptions. 
+
+### Validity
+Recall that the validity assumption states that the model is appropriate 
+for the research question. Validity is assessed through three questions:
+
+A) Does the outcome variable reflect the *phenomenon of interest*?  
+B) Does the model include *all relevant explanatory variables*?     
+C) Does the model generalise to our *case of interest*?  
+
+>## Exercise
+> You are asked to use the `FEV1_Age_SmokeNow` model to answer the following research question:  
+> 
+> "Does the effect of age on FEV1 differ by smoking status in US adults?"  
+> 
+> Using the three points above, assess the validity of this model for
+> the research question. 
+> > ## Solution
+> A) The research question is on FEV1, which is our outcome variable. Therefore our outcome variable reflects the phenomenon of interest.   
+> B) Our research question asks whether the effect of age differs by smoking status, which can be tested using an interaction between `Age` and `SmokeNow`. Since our model does not include this interaction, our model does not include all relevant explanatory variables.    
+> C) Since the NHANES data was collected from individuals in the US, our model should generalise to our case of interest.  
+> {: .solution}
+{: .challenge}
+
+### Representativeness
+Recall that the representativeness assumption states that the sample is 
+representative of the population to which we are generalising our findings. This
+assumption is assessed in the same way as for the case of the simple linear
+regression model, so we will go through another exercise at this point. 
+
+### Linearity and additivity
+Recall that this assumption states that our outcome variable has a linear, 
+additive relationship with the explanatory variables. 
+
+The linearity component is assessed in the same way as in the simple
+linear regression case. For example, recall that the relationship between
+combined diastolic blood pressure (`BPDiaAve`) and age in months (`AgeMonths`)
+was curved. Adding a squared term to the model helped us to model this
+non-linear relationship. We can add a `Sex` term to fit separate
+non-linear curves to this data:
+
+```{r non-linear interaction BPDiaAve AgeMonths Sex, warning = FALSE}
+BPDiaAve_AgeMonthsSQ_Sex <- lm(BPDiaAve ~ AgeMonths + I(AgeMonths^2) + Sex, data = dat)
+interact_plot(BPDiaAve_AgeMonthsSQ_Sex, pred = AgeMonths, modx = Sex,
+            plot.points = TRUE, interval = TRUE,
+            point.size = 0.7) +
+  ylab("Combined diastolic blood pressure") +
+  xlab("Age in Months") 
+
+```
+
+The non-linear relationship has now been modeled separately for levels
+of a categorical variable. 
+
+Recall that the additivity component of the linearity and additivity assumption 
+means that the effect of any explanatory variable on the outcome variable does 
+not depend on another explanatory variable in the model. In other words, that 
+our model includes all necessary interactions between explanatory variables. 
+In the above example, the additivity component does not appear to be violated:
+it does not look like the data requires an interaction between age and sex. 
+However, to be sure of this we may compare the model fit of models with and
+without the interaction using the tools discussed in this episode.
+
+>## Exercise
+> In the example above we saw that a model with a squared explanatory variable 
+> can also include separate intercepts for levels of a categorical variable.  
+>
+> Recall out `child_logWeight_Height_lm` model from the previous lesson,
+> which modeled the relationship between the log of child weight
+> and child height:
+> 
+> ```{r non-linearity challenge intro, warning = FALSE, message = FALSE}
+> child_logWeight_Height_lm <- dat %>%
+>   filter(Age < 18) %>%
+>   lm(formula = log(Weight) ~ Height)
+> 
+> effect_plot(child_logWeight_Height_lm, pred = Height, 
+>                   plot.points = TRUE, interval = TRUE,
+>                   colors = c("red")) 
+> ```
+>
+> Extend this model by adding separate intercepts 
+> for the levels of the `Sex` variable. 
+> 
+> > ## Solution
+> > ```{r non-linearity challenge part 2, warning = FALSE, message = FALSE}
+> > child_logWeight_Height_Sex <- dat %>%
+> >   filter(Age < 18) %>%
+> >   lm(formula = log(Weight) ~ Height + Sex)
+> > 
+> > interact_plot(child_logWeight_Height_Sex, pred = Height, modx = Sex,
+> >               plot.points = TRUE, interval = TRUE,
+> >               point.size = 0.7)
+> > ```
+> > 
+> {: .solution}
+{: .challenge}
+
+### Independent errors
+Recall that two common types of non-independence, and their solutions, are:
+
+* Observations in our data can be grouped. If there are a few levels in our grouping variable (say, less than 6) then we might choose to include the grouping variable as an explanatory variable in our model. If the grouping variable has more levels, we may choose to include the variable as a random effect, a component of mixed effect models (not discussed here).
+* Our data contains repeated measurements on the same individuals. This can be overcome using random effects, which are a component of mixed effects models (not discussed here).
+
+>## Exercise
+> In which of the following scenarios are we at risk of violating the independent errors assumption? In those cases, should we be working with an extra explanatory variable or with a random effect?
+> 
+> A) We are modelling the effect of average daily calorie intake on BMI in the adult UK population. We have one observation per participant and participants are known to belong to one of ten income brackets.  
+> B) We are modelling the effect of age on grip strength in adult females in the UK. Whether participants are physically active is known.  
+> C) We are asking whether people's sprinting speed is increased after partaking in an athletics course. Our data includes measurements of 100 participant's sprinting speed before and after the course. 
+> 
+> > ## Solution
+> > A) Since we have multiple observations per income bracket, our observations are not independent. There are ten levels in the income bracket variable, so we may chose to model it through a random effect.  
+> > B) Since we have multiple observations per level of physical activity, are observations are not independent. Since there are two levels in our physical activity variable, we could use physical activity as an explanatory variable in our model.   
+> > C) This data has two levels of grouping: within individuals (two measurements per individual) and timing (before/after the course). While timing can be included as an explanatory variable (two levels), individuals would need to be included as a random effect (100 levels). 
+> {: .solution}
+{: .challenge}
+
+```{r}
+residualData <- tibble(resid = resid(BPSysAve_Age_Sex),
+                    fitted = fitted(BPSysAve_Age_Sex),
+                    height = BPSysAve_Age_Sex$model$Age,
+                    sex = BPSysAve_Age_Sex$model$Sex)
+
+p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+
+p2 <- ggplot(residualData, aes(x = height, y = resid)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+
+p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
+  geom_violin() + 
+  geom_jitter(alpha = 0.1, width = 0.2) 
+
+
+p1 + p2 + p3
+```
