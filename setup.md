@@ -46,8 +46,8 @@ dat <- NHANESraw %>%
             UrineVol2,
             UrineFlow2,
             PregnantNow)) %>% # remove variables which will not be used
-  select(-c(AgeMonths, Race3, 
-            Testosterone,
+  select(-c(Race3, 
+           
             TVHrsDay, 
             CompHrsDay,
             TVHrsDayChild,
