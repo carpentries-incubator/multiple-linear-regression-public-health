@@ -34,6 +34,7 @@ library(interactions)
 
 In the previous episode, we modeled the effect of the continuous explanatory variable as equal across the groups of the categorical explanatory variable. For example, the effect of `Weight` on `BMI` was estimated as $0.31$ for both females and males. In this episode we will expand our modelling approach to include an *interaction* between the continuous and categorical explanatory variables. As a result, not only the intercept but also the coefficient of the explanatory variable will differ across the levels of the categorical variable in our model. This is appropriate when the slope in our scatterplot differs between the levels of the categorical variable. 
 
+## Visually exploring the need for an interaction
 We will use the variables `BPSysAve`, `Age` and `Sex` as an example. Looking at the scatterplot below, for which the data has been filtered to include participants over the age of 17, it seems that the slope for females is greater than for males.   
 
 ```{r BPSysAve by Age across Sex plot, warning = FALSE}
@@ -65,6 +66,7 @@ dat %>%
 > {: .solution}
 {: .challenge}
 
+## Fitting and interpreting a multiple linear regression model with an interaction
 The code for fitting our model is similar to the previous `lm()` commands. Notice however that instead of a `+` between the explanatory variables, we use a `*`. This is how we tell `lm()` that we want an interaction between the explanatory variables to be included in the model. The interaction allows the effect of `Age` to differ across the levels of `Sex`. 
 
 In the output from `summ()` we see two coefficients that relate to the baseline level of `Sex`: an intercept and the effect for `Age`. For the alternative level of `Sex`, we see two further coefficients: the difference in the intercept (`Sexmale`) and the difference in the slope (`Age:Sexmale`). The equation for this model therefore becomes:
@@ -125,6 +127,7 @@ summ(BPSysAve_Age_Sex)
 > {: .solution}
 {: .challenge}
 
+## Visualising a multiple linear regression model with an interaction
 We can visualise the model, as before, using the `interact_plot()` function.
 
 ```{r visualise BPSYSAve_Age_Sex}
