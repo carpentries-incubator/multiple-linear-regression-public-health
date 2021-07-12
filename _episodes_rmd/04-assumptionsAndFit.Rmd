@@ -283,10 +283,6 @@ p1 + p2 + p3
 > > B) The points in the scatterplot of age could be coloured by sex to assess
 > > the homoscedasticity assumption at the interaction level:
 > > ```{r updated diagnostic plot testosterone, echo = FALSE, message = FALSE}
-> > p1 <- ggplot(residualData, aes(x = fitted, y = resid, colour = sex)) +
-> >   geom_point(alpha = 0.3) +
-> >   geom_smooth()
-> > 
 > > p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
 > >  geom_point(alpha = 0.3) +
 > >  geom_smooth()
