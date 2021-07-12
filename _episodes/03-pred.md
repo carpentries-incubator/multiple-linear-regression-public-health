@@ -8,7 +8,7 @@ objectives:
   - Use the predict function to generate predictions from a multiple linear regression model.
 keypoints:
   - Predictions of the mean in the outcome variable can be manually calculated using the model's equation.
-  - Predictions of multiple means in the outcome variable alongside 95% CIs can be obtained using the `predict()` function. 
+  - Predictions of multiple means in the outcome variable alongside 95% CIs can be obtained using the `make_predictions()` function. 
 questions:
   - How can predictions be calculated using the model equation of a multiple linear regression model?
   - How can R be used to obtain predictions from a multiple linear regression model?
@@ -19,6 +19,8 @@ execises: 10
 
 
 As with the simple linear regression model, the multiple linear regression model allows us to make predictions. First we will calculate predictions using the model equation. Then we will see how R can calculate predictions for us using the `predict()` function.
+
+## Calculating predictions manually
 
 Let us use the `BPSysAve_Age_Sex` model from the previous episode. The equation for this model was $E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times \text{SexMale} - \text{SexMale} \times 0.28 \times \text{Age}$, where $\text{SexMale} = 1$ for male participants and $0$ otherwise. 
 
@@ -38,9 +40,12 @@ For a 30-year old male, the model predicts an average systolic blood pressure of
 > {: .solution}
 {: .challenge}
 
-Using the `predict()` function brings two advantages. First, when calculating multiple predictions, we are saved the effort of inserting multiple values into our model manually and doing the calculations. Secondly, `predict()` returns 95% confidence intervals around the predictions, giving us a sense of the uncertainty around the predictions. 
+## Making predictions using `make_predictions()`
 
-To use `predict()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with `Age` having the values 30, 40, 50 and 60 for females and males. We then provide `predict()` with this `tibble`, alongside the model from which we wish to have predictions and `interval = "confidence"` to obtain 95% confidence intervals. 
+Using the `make_predictions()` function brings two advantages. First, when calculating multiple predictions, we are saved the effort of inserting multiple values into our model manually and doing the calculations. Secondly, `make_predictions()` returns 95% confidence intervals around the predictions, giving us a sense of the uncertainty around the predictions. 
+
+To use `make_predictions()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with `Age` having the values 30, 40, 50 and 60 for females and males. We then provide `make_predictions()` with this `tibble`, alongside the model from which we wish to have predictions. By default, `make_predicitons()` returns
+95% confidence intervals for the mean predictions. 
 
 From the output we can see that the model predicts an average systolic blood pressure of 109.8596 for a 30-year old female. The confidence interval around this prediction is [109.0593, 110.6599]. 
 
@@ -55,29 +60,30 @@ predictionDat <- tibble(Age = c(30, 40, 50, 60,
                         Sex = c("female", "female", "female", "female",
                                 "male", "male", "male", "male"))
 
-predict(BPSysAve_Age_Sex, newdata = predictionDat,
-        interval = "confidence")
+make_predictions(BPSysAve_Age_Sex, new_data = predictionDat)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-       fit      lwr      upr
-1 109.8596 109.0593 110.6599
-2 115.3480 114.7218 115.9741
-3 120.8364 120.2654 121.4073
-4 126.3247 125.6597 126.9897
-5 118.6078 117.7888 119.4268
-6 121.3253 120.6856 121.9649
-7 124.0428 123.4660 124.6195
-8 126.7603 126.0962 127.4243
+# A tibble: 8 x 5
+    Age Sex    BPSysAve  ymax  ymin
+  <dbl> <chr>     <dbl> <dbl> <dbl>
+1    30 female     110.  111.  109.
+2    40 female     115.  116.  115.
+3    50 female     121.  121.  120.
+4    60 female     126.  127.  126.
+5    30 male       119.  119.  118.
+6    40 male       121.  122.  121.
+7    50 male       124.  125.  123.
+8    60 male       127.  127.  126.
 ~~~
 {: .output}
 
 
 >## Exercise
->Using the `predict` function, obtain the expected mean Hemoglobin levels
+>Using the `make_predictions()` function, obtain the expected mean Hemoglobin levels
 >predicted by the `Hemoglobin_Age_Sex` model for individuals with an Age 
 > of 20, 30, 40 and 50. Obtain confidence intervals for these predictions. 
 How are these confidence intervals interpreted?
@@ -93,23 +99,24 @@ How are these confidence intervals interpreted?
 > >                          Sex = c("female", "female", "female", "female",
 > >                                  "male", "male", "male", "male"))
 > > 
-> > predict(Hemoglobin_Age_Sex, newdata = predictionDat,
-> >         interval = "confidence")
+> > make_predictions(Hemoglobin_Age_Sex, new_data = predictionDat)
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> >        fit      lwr      upr
-> > 1 13.31002 13.23220 13.38784
-> > 2 13.31799 13.25790 13.37808
-> > 3 13.32595 13.27898 13.37293
-> > 4 13.33392 13.29098 13.37685
-> > 5 15.60637 15.52626 15.68649
-> > 6 15.38407 15.32199 15.44615
-> > 7 15.16177 15.11334 15.21019
-> > 8 14.93946 14.89595 14.98298
+> > # A tibble: 8 x 5
+> >     Age Sex    Hemoglobin  ymax  ymin
+> >   <dbl> <chr>       <dbl> <dbl> <dbl>
+> > 1    20 female       13.3  13.4  13.2
+> > 2    30 female       13.3  13.4  13.3
+> > 3    40 female       13.3  13.4  13.3
+> > 4    50 female       13.3  13.4  13.3
+> > 5    20 male         15.6  15.7  15.5
+> > 6    30 male         15.4  15.4  15.3
+> > 7    40 male         15.2  15.2  15.1
+> > 8    50 male         14.9  15.0  14.9
 > > ~~~
 > > {: .output}
 > > Recall that 95% of the 95% confidence intervals are expected to contain the 

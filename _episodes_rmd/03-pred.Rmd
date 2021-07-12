@@ -6,7 +6,7 @@ objectives:
   - Use the predict function to generate predictions from a multiple linear regression model.
 keypoints:
   - Predictions of the mean in the outcome variable can be manually calculated using the model's equation.
-  - Predictions of multiple means in the outcome variable alongside 95% CIs can be obtained using the `predict()` function. 
+  - Predictions of multiple means in the outcome variable alongside 95% CIs can be obtained using the `make_predictions()` function. 
 questions:
   - How can predictions be calculated using the model equation of a multiple linear regression model?
   - How can R be used to obtain predictions from a multiple linear regression model?
@@ -24,6 +24,8 @@ library(jtools)
 ```
 
 As with the simple linear regression model, the multiple linear regression model allows us to make predictions. First we will calculate predictions using the model equation. Then we will see how R can calculate predictions for us using the `predict()` function.
+
+## Calculating predictions manually
 
 Let us use the `BPSysAve_Age_Sex` model from the previous episode. The equation for this model was $E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times \text{SexMale} - \text{SexMale} \times 0.28 \times \text{Age}$, where $\text{SexMale} = 1$ for male participants and $0$ otherwise. 
 
@@ -43,7 +45,9 @@ For a 30-year old male, the model predicts an average systolic blood pressure of
 > {: .solution}
 {: .challenge}
 
-Using the `predict()` function brings two advantages. First, when calculating multiple predictions, we are saved the effort of inserting multiple values into our model manually and doing the calculations. Secondly, `predict()` returns 95% confidence intervals around the predictions, giving us a sense of the uncertainty around the predictions. 
+## Making predictions using `make_predictions()`
+
+Using the `make_predictions()` function brings two advantages. First, when calculating multiple predictions, we are saved the effort of inserting multiple values into our model manually and doing the calculations. Secondly, `make_predictions()` returns 95% confidence intervals around the predictions, giving us a sense of the uncertainty around the predictions. 
 
 To use `make_predictions()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with `Age` having the values 30, 40, 50 and 60 for females and males. We then provide `make_predictions()` with this `tibble`, alongside the model from which we wish to have predictions. By default, `make_predicitons()` returns
 95% confidence intervals for the mean predictions. 
@@ -65,7 +69,7 @@ make_predictions(BPSysAve_Age_Sex, new_data = predictionDat)
 
 
 >## Exercise
->Using the `predict` function, obtain the expected mean Hemoglobin levels
+>Using the `make_predictions()` function, obtain the expected mean Hemoglobin levels
 >predicted by the `Hemoglobin_Age_Sex` model for individuals with an Age 
 > of 20, 30, 40 and 50. Obtain confidence intervals for these predictions. 
 How are these confidence intervals interpreted?
