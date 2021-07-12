@@ -19,6 +19,8 @@ source("../bin/chunk-options.R")
 #source("../bin/obtain_data.R")
 load("../bin/data.RData")
 knitr_fig_path("03-")
+library(dplyr)
+library(jtools)
 ```
 
 As with the simple linear regression model, the multiple linear regression model allows us to make predictions. First we will calculate predictions using the model equation. Then we will see how R can calculate predictions for us using the `predict()` function.
@@ -43,7 +45,8 @@ For a 30-year old male, the model predicts an average systolic blood pressure of
 
 Using the `predict()` function brings two advantages. First, when calculating multiple predictions, we are saved the effort of inserting multiple values into our model manually and doing the calculations. Secondly, `predict()` returns 95% confidence intervals around the predictions, giving us a sense of the uncertainty around the predictions. 
 
-To use `predict()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with `Age` having the values 30, 40, 50 and 60 for females and males. We then provide `predict()` with this `tibble`, alongside the model from which we wish to have predictions and `interval = "confidence"` to obtain 95% confidence intervals. 
+To use `make_predictions()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with `Age` having the values 30, 40, 50 and 60 for females and males. We then provide `make_predictions()` with this `tibble`, alongside the model from which we wish to have predictions. By default, `make_predicitons()` returns
+95% confidence intervals for the mean predictions. 
 
 From the output we can see that the model predicts an average systolic blood pressure of 109.8596 for a 30-year old female. The confidence interval around this prediction is [109.0593, 110.6599]. 
 
@@ -57,8 +60,7 @@ predictionDat <- tibble(Age = c(30, 40, 50, 60,
                         Sex = c("female", "female", "female", "female",
                                 "male", "male", "male", "male"))
 
-predict(BPSysAve_Age_Sex, newdata = predictionDat,
-        interval = "confidence")
+make_predictions(BPSysAve_Age_Sex, new_data = predictionDat)
 ```
 
 
@@ -78,8 +80,7 @@ How are these confidence intervals interpreted?
 > >                          Sex = c("female", "female", "female", "female",
 > >                                  "male", "male", "male", "male"))
 > > 
-> > predict(Hemoglobin_Age_Sex, newdata = predictionDat,
-> >         interval = "confidence")
+> > make_predictions(Hemoglobin_Age_Sex, new_data = predictionDat)
 > > ```
 > > Recall that 95% of the 95% confidence intervals are expected to contain the 
 > > population mean. 

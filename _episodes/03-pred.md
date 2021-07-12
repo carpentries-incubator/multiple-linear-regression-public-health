@@ -40,7 +40,8 @@ For a 30-year old male, the model predicts an average systolic blood pressure of
 
 Using the `predict()` function brings two advantages. First, when calculating multiple predictions, we are saved the effort of inserting multiple values into our model manually and doing the calculations. Secondly, `predict()` returns 95% confidence intervals around the predictions, giving us a sense of the uncertainty around the predictions. 
 
-To use `predict()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with `Age` having the values 30, 40, 50 and 60 for females and males. We then provide `predict()` with this `tibble`, alongside the model from which we wish to have predictions and `interval = "confidence"` to obtain 95% confidence intervals. 
+To use `make_predictions()`, we need to create a `tibble` with the explanatory variable values for which we wish to have mean predictions from the model. We do this using the `tibble()` function. Note that the column names must correspond to the names of the explanatory variables in the model, i.e. `Age` and `Sex`. In the code below, we create a `tibble` with `Age` having the values 30, 40, 50 and 60 for females and males. We then provide `make_predictions()` with this `tibble`, alongside the model from which we wish to have predictions. By default, `make_predicitons()` returns
+95% confidence intervals for the mean predictions. 
 
 From the output we can see that the model predicts an average systolic blood pressure of 109.8596 for a 30-year old female. The confidence interval around this prediction is [109.0593, 110.6599]. 
 
@@ -49,47 +50,32 @@ From the output we can see that the model predicts an average systolic blood pre
 BPSysAve_Age_Sex <- dat %>%
   filter(Age > 17) %>%
   lm(formula = BPSysAve ~ Age * Sex)
-~~~
-{: .language-r}
 
-
-
-~~~
-Error in dat %>% filter(Age > 17) %>% lm(formula = BPSysAve ~ Age * Sex): could not find function "%>%"
-~~~
-{: .error}
-
-
-
-~~~
 predictionDat <- tibble(Age = c(30, 40, 50, 60,
                                 30, 40, 50, 60),
                         Sex = c("female", "female", "female", "female",
                                 "male", "male", "male", "male"))
+
+make_predictions(BPSysAve_Age_Sex, new_data = predictionDat)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Error in tibble(Age = c(30, 40, 50, 60, 30, 40, 50, 60), Sex = c("female", : could not find function "tibble"
+# A tibble: 8 x 5
+    Age Sex    BPSysAve  ymax  ymin
+  <dbl> <chr>     <dbl> <dbl> <dbl>
+1    30 female     110.  111.  109.
+2    40 female     115.  116.  115.
+3    50 female     121.  121.  120.
+4    60 female     126.  127.  126.
+5    30 male       119.  119.  118.
+6    40 male       121.  122.  121.
+7    50 male       124.  125.  123.
+8    60 male       127.  127.  126.
 ~~~
-{: .error}
-
-
-
-~~~
-predict(BPSysAve_Age_Sex, newdata = predictionDat,
-        interval = "confidence")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in predict(BPSysAve_Age_Sex, newdata = predictionDat, interval = "confidence"): object 'BPSysAve_Age_Sex' not found
-~~~
-{: .error}
+{: .output}
 
 
 >## Exercise
@@ -103,47 +89,32 @@ How are these confidence intervals interpreted?
 > > Hemoglobin_Age_Sex <- dat %>%
 > >  filter(Age > 17) %>%
 > >  lm(formula = Hemoglobin ~ Age * Sex)
-> > ~~~
-> > {: .language-r}
 > > 
-> > 
-> > 
-> > ~~~
-> > Error in dat %>% filter(Age > 17) %>% lm(formula = Hemoglobin ~ Age * : could not find function "%>%"
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
 > > predictionDat <- tibble(Age = c(20, 30, 40, 50,
 > >                                  20, 30, 40, 50),
 > >                          Sex = c("female", "female", "female", "female",
 > >                                  "male", "male", "male", "male"))
+> > 
+> > make_predictions(Hemoglobin_Age_Sex, new_data = predictionDat)
 > > ~~~
 > > {: .language-r}
 > > 
 > > 
 > > 
 > > ~~~
-> > Error in tibble(Age = c(20, 30, 40, 50, 20, 30, 40, 50), Sex = c("female", : could not find function "tibble"
+> > # A tibble: 8 x 5
+> >     Age Sex    Hemoglobin  ymax  ymin
+> >   <dbl> <chr>       <dbl> <dbl> <dbl>
+> > 1    20 female       13.3  13.4  13.2
+> > 2    30 female       13.3  13.4  13.3
+> > 3    40 female       13.3  13.4  13.3
+> > 4    50 female       13.3  13.4  13.3
+> > 5    20 male         15.6  15.7  15.5
+> > 6    30 male         15.4  15.4  15.3
+> > 7    40 male         15.2  15.2  15.1
+> > 8    50 male         14.9  15.0  14.9
 > > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
-> > predict(Hemoglobin_Age_Sex, newdata = predictionDat,
-> >         interval = "confidence")
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in predict(Hemoglobin_Age_Sex, newdata = predictionDat, interval = "confidence"): object 'Hemoglobin_Age_Sex' not found
-> > ~~~
-> > {: .error}
+> > {: .output}
 > > Recall that 95% of the 95% confidence intervals are expected to contain the 
 > > population mean. 
 > > Therefore, we can be fairly confident that the true population means lie 
