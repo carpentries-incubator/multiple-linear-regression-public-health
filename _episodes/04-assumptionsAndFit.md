@@ -7,7 +7,7 @@ objectives:
   - Use the adjusted R squared value as a measure of model fit.
   - Assess whether the assumptions of the multiple linear regression model have been violated.
 keypoints:
-  - The adjusted R squared measure ensures that the metric does not increase simply due to the addition of a variable. The variable needs increase model fit for the adjusted R squared to increase.
+  - The adjusted R squared measure ensures that the metric does not increase simply due to the addition of a variable. The variable needs to improve model fit for the adjusted R squared to increase.
   - The same assumptions hold for simple and multiple linear regression, however more steps are involved in the assessment of the assumptions in the context of multiple linear regression. 
 questions:
   - Why is the adjusted R squared used, instead of the standard R squared, when working with multiple linear regression?
@@ -30,7 +30,7 @@ on model assumptions we learned that $R^2$ quantifies
 the proportion of variation in the outcome variable explained by the 
 explanatory variable. In the context of multiple linear regression, a
 caveat emerges to $R^2$: adding explanatory variables to our model will
-almost always increase $R^2$, even if the explanatory variables do not
+always increase $R^2$, even if the explanatory variables do not
 have relationships with the response variable. Therefore, when interpreting
 the output from `summ()`, look at the $R^2_{adj}$. This is an $R^2$ corrected
 for the number of variables in the model. In some cases, the adjusted and
@@ -39,7 +39,7 @@ will be larger.
 
 >## Exercise
 >Find the adjusted R-squared value for the `summ` output of our `Hemoglobin_Age_Sex` model from 
->[episode 2](carpentries-incubator.github.io/multiple-linear-regression-public-health/02-contAndCatInt/).
+>[episode 2](https://carpentries-incubator.github.io/multiple-linear-regression-public-health/02-contAndCatInt/).
 >What proportion of variation in hemoglobin is explained by age, sex and their interaction in our model? 
 >Does our model account for most of the variation in `Hemoglobin`?
 > > ## Solution
@@ -49,7 +49,7 @@ will be larger.
 > >   filter(Age > 17) %>%
 > >   lm(formula = Hemoglobin ~ Age * Sex)
 > > 
-> > summ(Hemoglobin_Age_Sex, confint = TRUE, digits = 3)
+> > summ(Hemoglobin_Age_Sex, confint = TRUE)
 > > ~~~
 > > {: .language-r}
 > > 
@@ -62,19 +62,19 @@ will be larger.
 > > Type: OLS linear regression 
 > > 
 > > MODEL FIT:
-> > F(3,5991) = 1026.313, p = 0.000
-> > R² = 0.339
-> > Adj. R² = 0.339 
+> > F(3,5991) = 1026.31, p = 0.00
+> > R² = 0.34
+> > Adj. R² = 0.34 
 > > 
 > > Standard errors: OLS
-> > --------------------------------------------------------------
-> >                       Est.     2.5%    97.5%    t val.       p
-> > ----------------- -------- -------- -------- --------- -------
-> > (Intercept)         13.294   13.175   13.413   219.699   0.000
-> > Age                  0.001   -0.001    0.003     0.684   0.494
-> > Sexmale              2.757    2.587    2.927    31.852   0.000
-> > Age:Sexmale         -0.023   -0.026   -0.020   -13.938   0.000
-> > --------------------------------------------------------------
+> > ---------------------------------------------------------
+> >                      Est.    2.5%   97.5%   t val.      p
+> > ----------------- ------- ------- ------- -------- ------
+> > (Intercept)         13.29   13.18   13.41   219.70   0.00
+> > Age                  0.00   -0.00    0.00     0.68   0.49
+> > Sexmale              2.76    2.59    2.93    31.85   0.00
+> > Age:Sexmale         -0.02   -0.03   -0.02   -13.94   0.00
+> > ---------------------------------------------------------
 > > ~~~
 > > {: .output}
 > > 
@@ -158,7 +158,7 @@ without the interaction using the tools discussed in this episode.
 > In the example above we saw that a model with a squared explanatory variable 
 > can also include separate intercepts for levels of a categorical variable.  
 >
-> Recall out `child_logWeight_Height_lm` model from the previous lesson,
+> Recall our `child_logWeight_Height_lm` model from the previous lesson,
 > which modeled the relationship between the log of child weight
 > and child height:
 > 
@@ -229,7 +229,8 @@ model. We create plots of residuals vs. fitted (`p1`), residuals vs. age (`p2`)
 and residuals vs. sex (`p3`). Notice that in the residuals vs. age plot, we colour
 points by sex using `colour = sex`. This allows us to assess whether the residuals
 are homogenously scattered across age, grouped by sex (i.e. at the interaction 
-level). 
+level). Note that the `+` in `p1 + p2 + p3` relies on the `patchwork` package
+being loaded. 
 
 
 
