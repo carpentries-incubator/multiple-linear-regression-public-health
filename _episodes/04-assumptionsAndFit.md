@@ -229,8 +229,8 @@ model. We create plots of residuals vs. fitted (`p1`), residuals vs. age (`p2`)
 and residuals vs. sex (`p3`). Notice that in the residuals vs. age plot, we colour
 points by sex using `colour = sex`. This allows us to assess whether the residuals
 are homogenously scattered across age, grouped by sex (i.e. at the interaction 
-level). Note that the `+` in `p1 + p2 + p3` relies on the `patchwork` package
-being loaded. 
+level). Note that the `/` in `p1 / p2 / p3` relies on the `patchwork` package
+being loaded and results in the three graphs being plotted in vertical sequence. 
 
 
 
@@ -253,7 +253,7 @@ p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
  geom_jitter(alpha = 0.3, width = 0.2) 
 
 
-p1 + p2 + p3
+p1 / p2 / p3
 ~~~
 {: .language-r}
 
