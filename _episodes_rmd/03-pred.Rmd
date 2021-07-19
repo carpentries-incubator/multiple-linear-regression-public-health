@@ -23,25 +23,25 @@ library(dplyr)
 library(jtools)
 ```
 
-As with the simple linear regression model, the multiple linear regression model allows us to make predictions. First we will calculate predictions using the model equation. Then we will see how R can calculate predictions for us using the `predict()` function.
+As with the simple linear regression model, the multiple linear regression model allows us to make predictions. First we will calculate predictions using the model equation. Then we will see how R can calculate predictions for us using the `make_predictions()` function.
 
 ## Calculating predictions manually
 
-Let us use the `BPSysAve_Age_Sex` model from the previous episode. The equation for this model was $E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times \text{SexMale} - \text{SexMale} \times 0.28 \times \text{Age}$, where $\text{SexMale} = 1$ for male participants and $0$ otherwise. 
+Let us use the `BPSysAve_Age_Sex` model from the previous episode. The equation for this model was $E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times x_2 - 0.28 \times x_2 \times \text{Age}$, where $x_2 = 1$ for male participants and $0$ otherwise. 
 
-For a 30-year old female, the model predicts an average systolic blood pressure of $E(\text{BPSysAve}) = 93.39 + 0.55 \times 30 + 17.06 \times 0 - 0 \times 0.28 \times 30 = 93.39 + 16.5 = 109.89$.  
-For a 30-year old male, the model predicts an average systolic blood pressure of $E(\text{BPSysAve}) = 93.39 + 0.55 \times 30 + 17.06 \times 1 - 1 \times 0.28 \times 30 = 93.39 + 16.5 + 17.06 - 8.4 = 118.55$.
+For a 30-year old female, the model predicts an average systolic blood pressure of $E(\text{BPSysAve}) = 93.39 + 0.55 \times 30 + 17.06 \times 0 - 0.28 \times 0 \times 30 = 93.39 + 16.5 = 109.89$.  
+For a 30-year old male, the model predicts an average systolic blood pressure of $E(\text{BPSysAve}) = 93.39 + 0.55 \times 30 + 17.06 \times 1 - 0.28 \times 1 \times 30 = 93.39 + 16.5 + 17.06 - 8.4 = 118.55$.
 
 >## Exercise
 >Given the `summ` output from our `Hemoglobin_Age_Sex` model, 
 >the model can be described
->as $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times \text{SexMale} - \text{SexMale} \times 0.02 \times \text{Age}$, where $\text{SexMale} = 1$ for participants of the male `Sex` and $0$ otherwise. 
+>as $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times x_2 - 0.02 \times x_2 \times \text{Age}$, where $x_2 = 1$ for participants of the male `Sex` and $0$ otherwise. 
 >What level of Hemoglobin does the model predict, on average, 
 >for an individual of the female `Sex` with an `Age` of 40? 
 > And what Hemoglobin is predicted for a male of the same `Age`?
 > > ## Solution
-> > For 40-year old females: $13.29 + 0.00 \times 40 + 2.76 \times 0 - 0 \times 0.02 \times 40 = 13.29$.  
-> > For 40-year old males: $13.29 + 0.00 \times 40 + 2.76 \times 1 - 1 \times 0.02 \times 40 = 13.29 + 2.76 - 0.8 = 15.25$.
+> > For 40-year old females: $13.29 + 0.00 \times 40 + 2.76 \times 0 - 0.02 \times 0 \times 40 = 13.29$.  
+> > For 40-year old males: $13.29 + 0.00 \times 40 + 2.76 \times 1 - 0.02 \times 1 \times 40 = 13.29 + 2.76 - 0.8 = 15.25$.
 > {: .solution}
 {: .challenge}
 
@@ -70,7 +70,7 @@ make_predictions(BPSysAve_Age_Sex, new_data = predictionDat)
 
 >## Exercise
 >Using the `make_predictions()` function, obtain the expected mean Hemoglobin levels
->predicted by the `Hemoglobin_Age_Sex` model for individuals with an Age 
+>predicted by the `Hemoglobin_Age_Sex` model for individuals with an `Age` 
 > of 20, 30, 40 and 50. Obtain confidence intervals for these predictions. 
 How are these confidence intervals interpreted?
 > > ## Solution

@@ -34,7 +34,9 @@ We will use the variables `BPSysAve`, `Age` and `Sex` as an example. Looking at 
 dat %>%
   filter(Age > 17) %>%
   ggplot(aes(x = Age, y = BPSysAve, colour = Sex)) +
-  geom_point(alpha = 0.4)
+  geom_point(alpha = 0.4) +
+  ylab("Average systolic blood pressure (mmHg)") +
+  xlab("Age (years)")
 ~~~
 {: .language-r}
 
@@ -47,18 +49,21 @@ dat %>%
 > package to create an exploratory plot, ensuring that:
 > 1. Only participants aged 18 or over are included.  
 > 2. Hemoglobin (`Hemoglobin`) is on the y-axis and Age (`Age`) is on the 
-> x-axis.
+> x-axis. 
 > 3. This data shown as a scatterplot, with points coloured by 
-> `Sex` and an opacity of 0.4.
+> `Sex` and an opacity of 0.4.  
+> 4. The axes labelled as "Hemoglobin (g/dL)" and "Age (years)". 
 >
 > > ## Solution
 > > 
 > > 
 > > ~~~
 > > dat %>%
-> >   filter(Age>17) %>%
+> >   filter(Age > 17) %>%
 > >   ggplot(aes(x = Age, y = Hemoglobin, colour = Sex)) +
-> >   geom_point(alpha = 0.4) 
+> >   geom_point(alpha = 0.4) +
+> >   ylab("Hemoglobin (g/dL)") +
+> >   xlab("Age (years)")
 > > ~~~
 > > {: .language-r}
 > > 
@@ -71,9 +76,9 @@ The code for fitting our model is similar to the previous `lm()` commands. Notic
 
 In the output from `summ()` we see two coefficients that relate to the baseline level of `Sex`: an intercept and the effect for `Age`. For the alternative level of `Sex`, we see two further coefficients: the difference in the intercept (`Sexmale`) and the difference in the slope (`Age:Sexmale`). The equation for this model therefore becomes:
 
-$$E(\text{BPSysAve}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times \text{SexMale} - \text{SexMale} \times 0.28 \times \text{Age}$$,
+$$E(\text{Average systolic blood pressure}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times x_2 - 0.28 \times x_2 \times \text{Age}$$,
 
-where $\text{SexMale} = 1$ for male participants and $0$ otherwise. 
+where $x_2 = 1$ for male participants and $0$ otherwise. 
 
 Since the difference in the intercepts is positive, we expect a greater intercept for males than for females. Furthermore, since the difference in the slopes is negative, we expect a smaller slope for males than for females.  
 
@@ -116,8 +121,9 @@ Age:Sexmale         -0.28   0.02   -12.68   0.00
 > 1. Using the `lm()` command, fit a multiple linear regression model of 
 > Hemoglobin
 > (`Hemoglobin`) as a function of Age (`Age`), grouped by `Sex`, including
-> an interaction between `Age` and `Sex`.
-> Name this `lm` object `Hemoglobin_Age_Sex`.  
+> an interaction between `Age` and `Sex`. Make sure to only include participants
+> who were 18 years or older. 
+> Name the `lm` object `Hemoglobin_Age_Sex`.  
 > 2. Using the `summ` function from the `jtools` package, answer the following questions:
 >   
 > A) What concentration of `Hemoglobin` does the model predict, on average,
@@ -177,7 +183,7 @@ Age:Sexmale         -0.28   0.02   -12.68   0.00
 > > are expected to differ by 0.00 in their `Hemoglobin` concentration.  
 > > D) On average, male participants with a one-unit difference in `Age` 
 > > are expected to differ by 0.02 in their `Hemoglobin` concentration.   
-> > E) $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times \text{SexMale} - \text{SexMale} \times 0.02 \times \text{Age}$, where $\text{SexMale} = 1$ for participants of the male `Sex` and $0$ otherwise.
+> > E) $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times x_2 - x_2 \times 0.02 \times \text{Age}$, where $x_2 = 1$ for participants of the male `Sex` and $0$ otherwise.
 > {: .solution}
 {: .challenge}
 
@@ -187,7 +193,9 @@ We can visualise the model, as before, using the `interact_plot()` function.
 
 ~~~
 interact_plot(BPSysAve_Age_Sex, pred = Age, modx = Sex,
-              plot.points = TRUE, point.alpha = 0.4)
+              plot.points = TRUE, point.alpha = 0.4) +
+  ylab("Average systolic blood pressure (mmHg)") +
+  xlab("Age (years)")
 ~~~
 {: .language-r}
 
@@ -201,7 +209,9 @@ interact_plot(BPSysAve_Age_Sex, pred = Age, modx = Sex,
 > > 
 > > ~~~
 > > interact_plot(Hemoglobin_Age_Sex, pred = Age, modx = Sex, 
-> >               plot.points = TRUE, point.alpha = 0.4)
+> >               plot.points = TRUE, point.alpha = 0.4) +
+> >   ylab("Hemoglobin (g/dL)") +
+> >   xlab("Age (years)")
 > > ~~~
 > > {: .language-r}
 > > 
