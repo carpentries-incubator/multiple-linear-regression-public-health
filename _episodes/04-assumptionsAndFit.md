@@ -125,7 +125,7 @@ additive relationship with the explanatory variables.
 The linearity component is assessed in the same way as in the simple
 linear regression case. For example, recall that the relationship between
 combined diastolic blood pressure (`BPDiaAve`) and age in months (`AgeMonths`)
-was curved. Adding a squared term to the model helped us to model this
+was curved (see [this](https://carpentries-incubator.github.io/simple-linear-regression-public-health/06-fitAndAssumptionSLR/) episode from the simple linear regression lesson). Adding a squared term to the model helped us to model this
 non-linear relationship. We can add a `Sex` term to fit separate
 non-linear curves to this data:
 
@@ -158,7 +158,7 @@ without the interaction using the tools discussed in this episode.
 > In the example above we saw that a model with a squared explanatory variable 
 > can also include separate intercepts for levels of a categorical variable.  
 >
-> Recall our `child_logWeight_Height_lm` model from the previous lesson,
+> Recall our `child_logWeight_Height_lm` model from the [previous lesson](https://carpentries-incubator.github.io/simple-linear-regression-public-health/06-fitAndAssumptionSLR/),
 > which modeled the relationship between the log of child weight
 > and child height:
 > 
@@ -288,7 +288,7 @@ p1 / p2 / p3
 {: .challenge}
 
 ### Normality of errors 
-Recall that this assumption states that the errors follow a Normal distribution. 
+Recall that this assumption states that the errors follow a normal distribution. 
 When this assumption is strongly violated, 
 predictions from the model are less reliable. 
 Small deviations from normality may pose less of an issue. 
