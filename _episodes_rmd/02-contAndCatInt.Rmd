@@ -110,7 +110,7 @@ summ(BPSysAve_Age_Sex)
 > a one-unit difference in `Age` in the alternative level of `Sex`?  
 > E) Given these values and the names of the response and explanatory
 > variables, how can the general equation $E(y) = \beta_0 + {\beta}_1 
-> \times x_1 + {\beta}_2 \times x_2 + {\beta}_2 \times {\beta}_3 \times x_2$ be adapted to represent the model? 
+> \times x_1 + {\beta}_2 \times x_2 + {\beta}_3 \times x_1 \times x_2$ be adapted to represent the model? 
 >
 > > ## Solution
 > > 
