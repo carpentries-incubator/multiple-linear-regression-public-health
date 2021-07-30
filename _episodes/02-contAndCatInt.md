@@ -18,8 +18,8 @@ questions:
   - How is an interaction added in the `lm()` command?
   - How do the coefficient estimates given by `summ()` relate to the multiple linear regression model equation?
   - How is the final model visualised in R?
-teaching: 10
-execises: 10
+teaching: 20
+exercises: 30
 ---
 
 

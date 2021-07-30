@@ -10,8 +10,8 @@ keypoints:
 questions:
   - Why is the adjusted R squared used, instead of the standard R squared, when working with multiple linear regression?
   - What are the six assumptions of multiple linear regression and how are they assessed?
-teaching: 10
-execises: 10
+teaching: 15
+exercises: 45
 ---
 
 ```{r, include=FALSE}

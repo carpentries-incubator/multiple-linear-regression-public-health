@@ -12,8 +12,8 @@ keypoints:
 questions:
   - How can predictions be calculated using the model equation of a multiple linear regression model?
   - How can R be used to obtain predictions from a multiple linear regression model?
-teaching: 10
-execises: 10
+teaching: 8
+exercises: 12
 ---
 
 
@@ -67,7 +67,7 @@ make_predictions(BPSysAve_Age_Sex, new_data = predictionDat)
 
 
 ~~~
-# A tibble: 8 x 5
+# A tibble: 8 × 5
     Age Sex    BPSysAve  ymax  ymin
   <dbl> <chr>     <dbl> <dbl> <dbl>
 1    30 female     110.  111.  109.
@@ -106,7 +106,7 @@ How are these confidence intervals interpreted?
 > > 
 > > 
 > > ~~~
-> > # A tibble: 8 x 5
+> > # A tibble: 8 × 5
 > >     Age Sex    Hemoglobin  ymax  ymin
 > >   <dbl> <chr>       <dbl> <dbl> <dbl>
 > > 1    20 female       13.3  13.4  13.2

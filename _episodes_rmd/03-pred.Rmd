@@ -10,8 +10,8 @@ keypoints:
 questions:
   - How can predictions be calculated using the model equation of a multiple linear regression model?
   - How can R be used to obtain predictions from a multiple linear regression model?
-teaching: 10
-execises: 10
+teaching: 8
+exercises: 12
 ---
 
 ```{r, include=FALSE}
