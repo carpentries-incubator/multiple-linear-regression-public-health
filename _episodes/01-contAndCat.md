@@ -18,8 +18,8 @@ questions:
   - How can a linear regression model be fit to this type of data in R?
   - How are the model parameters obtained and interpreted?
   - How is the linear regression model visualised in R?
-teaching: 10
-execises: 10
+teaching: 15
+exercises: 20
 ---
 
 
