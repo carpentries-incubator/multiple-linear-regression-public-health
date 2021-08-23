@@ -15,9 +15,9 @@ keypoints:
   - The function `interact_plot()` can be used to visualise the model. 
 questions:
   - When is it appropriate to add an interaction to a multiple linear regression model?
-  - How is an interaction added in the `lm()` command?
+  - How do we add an interaction term in the `lm()` command?
   - How do the coefficient estimates given by `summ()` relate to the multiple linear regression model equation?
-  - How is the final model visualised in R?
+  - How can we visualise the final model in R?
 teaching: 20
 exercises: 30
 ---
@@ -50,9 +50,9 @@ dat %>%
 > 1. Only participants aged 18 or over are included.  
 > 2. Hemoglobin (`Hemoglobin`) is on the y-axis and Age (`Age`) is on the 
 > x-axis. 
-> 3. This data shown as a scatterplot, with points coloured by 
+> 3. These data are shown as a scatterplot, with points coloured by 
 > `Sex` and an opacity of 0.4.  
-> 4. The axes labelled as "Hemoglobin (g/dL)" and "Age (years)". 
+> 4. The axes are labelled as "Hemoglobin (g/dL)" and "Age (years)". 
 >
 > > ## Solution
 > > 
@@ -76,7 +76,7 @@ The code for fitting our model is similar to the previous `lm()` commands. Notic
 
 In the output from `summ()` we see two coefficients that relate to the baseline level of `Sex`: an intercept and the effect for `Age`. For the alternative level of `Sex`, we see two further coefficients: the difference in the intercept (`Sexmale`) and the difference in the slope (`Age:Sexmale`). The equation for this model therefore becomes:
 
-$$E(\text{Average systolic blood pressure}) = 93.39 + 0.55 \times \text{Age} + 17.06 \times x_2 - 0.28 \times x_2 \times \text{Age}$$,
+$$E(\text{Average systolic blood pressure}) = 93.39 + \left(0.55 \times \text{Age}\right) + \left(17.06 \times x_2\right) - \left(0.28 \times x_2 \times \text{Age}\right)$$,
 
 where $x_2 = 1$ for male participants and $0$ otherwise. 
 
@@ -121,7 +121,8 @@ Age:Sexmale         -0.28   0.02   -12.68   0.00
 > 1. Using the `lm()` command, fit a multiple linear regression model of 
 > Hemoglobin
 > (`Hemoglobin`) as a function of Age (`Age`), grouped by `Sex`, including
-> an interaction between `Age` and `Sex`. Make sure to only include participants
+> an interaction between `Age` and `Sex`. 
+> Make sure to only include participants
 > who were 18 years or older. 
 > Name the `lm` object `Hemoglobin_Age_Sex`.  
 > 2. Using the `summ` function from the `jtools` package, answer the following questions:
@@ -180,7 +181,7 @@ Age:Sexmale         -0.28   0.02   -12.68   0.00
 > > B) On average, individuals from the two categories are expected to differ
 > > by 2.76 g/dL at an `Age` of 0.    
 > > C) On average, female participants with a one-unit difference in `Age` 
-> > are expected to differ by 0.00 in their `Hemoglobin` concentration.  
+> > are expected to differ by 0.00 in their `Hemoglobin` concentration. So, not at all.
 > > D) On average, male participants with a one-unit difference in `Age` 
 > > are expected to differ by 0.02 in their `Hemoglobin` concentration.   
 > > E) $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times x_2 - x_2 \times 0.02 \times \text{Age}$, where $x_2 = 1$ for participants of the male `Sex` and $0$ otherwise.
