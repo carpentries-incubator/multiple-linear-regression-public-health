@@ -5,7 +5,7 @@ permalink: index.html  # Is the only page that doesn't follow the pattern /:path
 ---
 Data Carpentry's aim is to teach researchers basic concepts, skills, and tools for working with data so that they can get more done in less time, and with less pain. This lesson was designed for researchers interested in working with public health data in R, but may be of interest to researchers in other fields as well.
 
-This lesson provides an introduction to linear regression with more than one explanatory variable. This is known as multiple linear regression, as the model has multiple explanatory variables. The first episode of this lesson covers how to fit and interpret models with one continuous and one categorical explanatory variable. In the second episode, these models are expanded by including an interaction between the two explanatory variables. In the third episode predictions of the mean are covered. The final episode covers model fit and model assumptions assessment.  
+This lesson provides an introduction to linear regression with more than one explanatory variable. This is known as multiple linear regression, as the model has multiple explanatory variables. The first episode of this lesson covers how to fit and interpret models with one continuous and one categorical explanatory variable. In the second episode, these models are expanded by including an interaction between the two explanatory variables. In the third episode, predictions of the mean are covered. The final episode covers model fit and assessment of model assumptions.  
 
 <!-- this is an html comment -->
 
