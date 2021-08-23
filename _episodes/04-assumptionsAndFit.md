@@ -30,8 +30,7 @@ on model assumptions we learned that $R^2$ quantifies
 the proportion of variation in the outcome variable explained by the 
 explanatory variable. In the context of multiple linear regression, a
 caveat emerges to $R^2$: adding explanatory variables to our model will
-always increase $R^2$, even if the explanatory variables do not
-have relationships with the response variable. Therefore, when interpreting
+always increase $R^2$, even if the explanatory variables are not related to the response variable. Therefore, when interpreting
 the output from `summ()`, look at the $R^2_{adj}$. This is an $R^2$ corrected
 for the number of variables in the model. In some cases, the adjusted and
 unadjusted metrics will be (near) equal. In other cases, the differences
@@ -178,7 +177,7 @@ without the interaction using the tools discussed in this episode.
 >
 > Extend this model by adding separate intercepts 
 > for the levels of the `Sex` variable. Visualise the model
-> using `interact_plot()`. 
+> using `interact_plot()`. Do you think that including the interaction between `Height` and `Sex` is necessary?
 > 
 > > ## Solution
 > > 
@@ -194,7 +193,7 @@ without the interaction using the tools discussed in this episode.
 > > {: .language-r}
 > > 
 > > <img src="../fig/rmd-04-non-linearity challenge part 2-1.png" title="plot of chunk non-linearity challenge part 2" alt="plot of chunk non-linearity challenge part 2" width="612" style="display: block; margin: auto;" />
-> > 
+> > There is little evidence from the plot that the effect of height on weight is different between sexes meaning that an interaction term is not needed. But we could assess the model fit with and without the interaction to check.
 > {: .solution}
 {: .challenge}
 
