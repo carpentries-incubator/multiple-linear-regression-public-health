@@ -47,10 +47,11 @@ $$E(\text{BPSysAve}) = 93.39 + 0.55 \times 30 + 17.06 \times 1 - 0.28 \times 1 \
 >as 
 >$$E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times x_2 - 0.02 \times x_2 \times \text{Age}$$, 
 >where $x_2 = 1$ for participants of the male `Sex` and $0$ otherwise. 
->
+> 
 >1. What level of Hemoglobin does the model predict, on average, 
 >for an individual of the female `Sex` with an `Age` of 40? 
 >2. What `Hemoglobin` is predicted for a male of the same `Age`?
+> 
 > > ## Solution
 > > For 40-year old females: $13.29 + 0.00 \times 40 + 2.76 \times 0 - 0.02 \times 0 \times 40 = 13.29$.  
 > > For 40-year old males: $13.29 + 0.00 \times 40 + 2.76 \times 1 - 0.02 \times 1 \times 40 = 13.29 + 2.76 - 0.8 = 15.25$.
