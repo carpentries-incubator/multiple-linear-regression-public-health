@@ -127,10 +127,10 @@ summ(BPSysAve_Age_Sex)
 > > B) On average, individuals from the two categories are expected to differ
 > > by 2.76 g/dL at an `Age` of 0.    
 > > C) On average, female participants with a one-unit difference in `Age` 
-> > are expected to differ by 0.00 in their `Hemoglobin` concentration. So, not at all.
+> > are expected to differ by 0.00 in their `Hemoglobin` concentration. So, not at all.  
 > > D) On average, male participants with a one-unit difference in `Age` 
 > > are expected to differ by 0.02 in their `Hemoglobin` concentration.   
-> > E) $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times x_2 - x_2 \times 0.02 \times \text{Age}$, where $x_2 = 1$ for participants of the male `Sex` and $0$ otherwise.
+> > E) $E(\text{Hemoglobin}) = 13.29 + 0.00 \times \text{Age} + 2.76 \times x_2 - 0.02 \times \text{Age} \times x_2$, where $x_2 = 1$ for participants of the male `Sex` and $0$ otherwise.
 > {: .solution}
 {: .challenge}
 

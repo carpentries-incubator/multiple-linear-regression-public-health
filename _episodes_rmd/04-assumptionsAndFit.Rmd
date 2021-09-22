@@ -62,7 +62,7 @@ will be larger.
 > > summ(Hemoglobin_Age_Sex, confint = TRUE)
 > > ```
 > > 
-> > Since $R^2_{adj} = 0.339$, our model accounts for approximately 34% of the variation in
+> > Since $R^2_{adj} = 0.34$, our model accounts for approximately 34% of the variation in
 > > `Hemoglobin`. Our model explains 34% of the variation in `Hemoglobin`, which
 > > a model that always predicts the mean would not. 
 > {: .solution}
@@ -208,21 +208,27 @@ being loaded and results in the three graphs being plotted in vertical sequence.
 
 ```{r homoscedasticity example, message = FALSE}
 residualData <- tibble(resid = resid(Hemoglobin_Age_Sex),
-                   fitted = fitted(Hemoglobin_Age_Sex),
-                   age = Hemoglobin_Age_Sex$model$Age,
-                   sex = Hemoglobin_Age_Sex$model$Sex)
+                       fitted = fitted(Hemoglobin_Age_Sex),
+                       age = Hemoglobin_Age_Sex$model$Age,
+                       sex = Hemoglobin_Age_Sex$model$Sex)
 
 p1 <- ggplot(residualData, aes(x = fitted, y = resid)) +
- geom_point(alpha = 0.3) +
- geom_smooth()
+  geom_point(alpha = 0.3) +
+  geom_smooth() +
+  ylab("Residual") +
+  xlab("Fitted values")
 
 p2 <- ggplot(residualData, aes(x = age, y = resid, colour = sex)) +
- geom_point(alpha = 0.3) +
- geom_smooth()
+  geom_point(alpha = 0.3) +
+  geom_smooth() +
+  ylab("Residual") +
+  xlab("Age")
 
 p3 <- ggplot(residualData, aes(x = sex, y = resid)) +
- geom_violin() + 
- geom_jitter(alpha = 0.3, width = 0.2) 
+  geom_violin() + 
+  geom_jitter(alpha = 0.3, width = 0.2) +
+  ylab("Residual") +
+  xlab("Sex")
 
 
 p1 / p2 / p3
