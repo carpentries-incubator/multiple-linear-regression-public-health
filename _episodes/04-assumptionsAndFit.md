@@ -116,6 +116,9 @@ Recall that the representativeness assumption states that the sample is
 representative of the population to which we are generalising our findings. This
 assumption is assessed in the same way as for the case of the simple linear
 regression model, so we will not go through another exercise at this point. 
+Note however that when representativesness is violated, this can sometimes
+be solved by adding the misrepresented variable to the model as an extra
+explanatory variable. 
 
 ### Linearity and additivity
 Recall that this assumption states that our outcome variable has a linear, 
