@@ -81,16 +81,16 @@ make_predictions(BPSysAve_Age_Sex, new_data = predictionDat)
 
 ~~~
 # A tibble: 8 × 5
-    Age Sex    BPSysAve  ymax  ymin
+    Age Sex    BPSysAve  ymin  ymax
   <dbl> <chr>     <dbl> <dbl> <dbl>
-1    30 female     110.  111.  109.
-2    40 female     115.  116.  115.
-3    50 female     121.  121.  120.
-4    60 female     126.  127.  126.
-5    30 male       119.  119.  118.
-6    40 male       121.  122.  121.
-7    50 male       124.  125.  123.
-8    60 male       127.  127.  126.
+1    30 female     110.  109.  111.
+2    40 female     115.  115.  116.
+3    50 female     121.  120.  121.
+4    60 female     126.  126.  127.
+5    30 male       119.  118.  119.
+6    40 male       121.  121.  122.
+7    50 male       124.  123.  125.
+8    60 male       127.  126.  127.
 ~~~
 {: .output}
 
@@ -120,16 +120,16 @@ How are these confidence intervals interpreted?
 > > 
 > > ~~~
 > > # A tibble: 8 × 5
-> >     Age Sex    Hemoglobin  ymax  ymin
+> >     Age Sex    Hemoglobin  ymin  ymax
 > >   <dbl> <chr>       <dbl> <dbl> <dbl>
-> > 1    20 female       13.3  13.4  13.2
-> > 2    30 female       13.3  13.4  13.3
-> > 3    40 female       13.3  13.4  13.3
-> > 4    50 female       13.3  13.4  13.3
-> > 5    20 male         15.6  15.7  15.5
-> > 6    30 male         15.4  15.4  15.3
-> > 7    40 male         15.2  15.2  15.1
-> > 8    50 male         14.9  15.0  14.9
+> > 1    20 female       13.3  13.2  13.4
+> > 2    30 female       13.3  13.3  13.4
+> > 3    40 female       13.3  13.3  13.4
+> > 4    50 female       13.3  13.3  13.4
+> > 5    20 male         15.6  15.5  15.7
+> > 6    30 male         15.4  15.3  15.4
+> > 7    40 male         15.2  15.1  15.2
+> > 8    50 male         14.9  14.9  15.0
 > > ~~~
 > > {: .output}
 > > Recall that 95% of the 95% confidence intervals are expected to contain the 
