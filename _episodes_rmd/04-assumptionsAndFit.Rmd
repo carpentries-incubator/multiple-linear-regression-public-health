@@ -153,7 +153,7 @@ without the interaction using the tools discussed in this episode.
 > 
 > effect_plot(child_logWeight_Height_lm, pred = Height, 
 >                   plot.points = TRUE, interval = TRUE,
->                   colors = c("red")) 
+>                   line.colors = c("magenta")) 
 > ```
 >
 > Extend this model by adding separate intercepts 

@@ -41,7 +41,7 @@ dat %>%
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-01-BMI_Weight_Sex exploratory plot-1.png" title="plot of chunk BMI_Weight_Sex exploratory plot" alt="plot of chunk BMI_Weight_Sex exploratory plot" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-01-BMI_Weight_Sex exploratory plot-1.png" alt="plot of chunk BMI_Weight_Sex exploratory plot" width="612" style="display: block; margin: auto;" />
 
 > ## Exercise  
 > You have been asked to model the relationship between `FEV1`
@@ -64,7 +64,7 @@ dat %>%
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-01-FEV1 vs Age by SmokeNow plot-1.png" title="plot of chunk FEV1 vs Age by SmokeNow plot" alt="plot of chunk FEV1 vs Age by SmokeNow plot" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-01-FEV1 vs Age by SmokeNow plot-1.png" alt="plot of chunk FEV1 vs Age by SmokeNow plot" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -198,7 +198,7 @@ interact_plot(BMI_Weight_Sex, pred = Weight, modx = Sex,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-01-effect_plot BMI_Weight_Sex-1.png" title="plot of chunk effect_plot BMI_Weight_Sex" alt="plot of chunk effect_plot BMI_Weight_Sex" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-01-effect_plot BMI_Weight_Sex-1.png" alt="plot of chunk effect_plot BMI_Weight_Sex" width="612" style="display: block; margin: auto;" />
 
 
 > ## Exercise  
@@ -213,7 +213,7 @@ interact_plot(BMI_Weight_Sex, pred = Weight, modx = Sex,
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-01-plot FEV1_Age_SmokeNow-1.png" title="plot of chunk plot FEV1_Age_SmokeNow" alt="plot of chunk plot FEV1_Age_SmokeNow" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-01-plot FEV1_Age_SmokeNow-1.png" alt="plot of chunk plot FEV1_Age_SmokeNow" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 

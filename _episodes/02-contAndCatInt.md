@@ -40,7 +40,7 @@ dat %>%
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-BPSysAve by Age across Sex plot-1.png" title="plot of chunk BPSysAve by Age across Sex plot" alt="plot of chunk BPSysAve by Age across Sex plot" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-BPSysAve by Age across Sex plot-1.png" alt="plot of chunk BPSysAve by Age across Sex plot" width="612" style="display: block; margin: auto;" />
 
 > ## Exercise  
 > You have been asked to model the relationship between `Hemoglobin`
@@ -67,7 +67,7 @@ dat %>%
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-02-Hemoglobin vs Age by Sex plot-1.png" title="plot of chunk Hemoglobin vs Age by Sex plot" alt="plot of chunk Hemoglobin vs Age by Sex plot" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-02-Hemoglobin vs Age by Sex plot-1.png" alt="plot of chunk Hemoglobin vs Age by Sex plot" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 
@@ -200,7 +200,7 @@ interact_plot(BPSysAve_Age_Sex, pred = Age, modx = Sex,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-02-visualise BPSYSAve_Age_Sex-1.png" title="plot of chunk visualise BPSYSAve_Age_Sex" alt="plot of chunk visualise BPSYSAve_Age_Sex" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-visualise BPSYSAve_Age_Sex-1.png" alt="plot of chunk visualise BPSYSAve_Age_Sex" width="612" style="display: block; margin: auto;" />
 
 > ## Exercise  
 > To help others interpret the `Hemoglobin_Age_Sex` model, produce a figure. 
@@ -216,7 +216,7 @@ interact_plot(BPSysAve_Age_Sex, pred = Age, modx = Sex,
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-02-plot Hemoglobin_Age_Sex-1.png" title="plot of chunk plot Hemoglobin_Age_Sex" alt="plot of chunk plot Hemoglobin_Age_Sex" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-02-plot Hemoglobin_Age_Sex-1.png" alt="plot of chunk plot Hemoglobin_Age_Sex" width="612" style="display: block; margin: auto;" />
 > {: .solution}
 {: .challenge}
 

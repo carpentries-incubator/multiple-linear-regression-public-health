@@ -142,7 +142,7 @@ interact_plot(BPDiaAve_AgeMonthsSQ_Sex, pred = AgeMonths, modx = Sex,
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-non-linear interaction BPDiaAve AgeMonths Sex-1.png" title="plot of chunk non-linear interaction BPDiaAve AgeMonths Sex" alt="plot of chunk non-linear interaction BPDiaAve AgeMonths Sex" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-non-linear interaction BPDiaAve AgeMonths Sex-1.png" alt="plot of chunk non-linear interaction BPDiaAve AgeMonths Sex" width="612" style="display: block; margin: auto;" />
 
 The non-linear relationship has now been modeled separately for levels
 of a categorical variable. 
@@ -172,11 +172,11 @@ without the interaction using the tools discussed in this episode.
 > 
 > effect_plot(child_logWeight_Height_lm, pred = Height, 
 >                   plot.points = TRUE, interval = TRUE,
->                   colors = c("red")) 
+>                   line.colors = c("magenta")) 
 > ~~~
 > {: .language-r}
 > 
-> <img src="../fig/rmd-04-non-linearity challenge intro-1.png" title="plot of chunk non-linearity challenge intro" alt="plot of chunk non-linearity challenge intro" width="612" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-04-non-linearity challenge intro-1.png" alt="plot of chunk non-linearity challenge intro" width="612" style="display: block; margin: auto;" />
 >
 > Extend this model by adding separate intercepts 
 > for the levels of the `Sex` variable. Visualise the model
@@ -195,7 +195,7 @@ without the interaction using the tools discussed in this episode.
 > > ~~~
 > > {: .language-r}
 > > 
-> > <img src="../fig/rmd-04-non-linearity challenge part 2-1.png" title="plot of chunk non-linearity challenge part 2" alt="plot of chunk non-linearity challenge part 2" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-04-non-linearity challenge part 2-1.png" alt="plot of chunk non-linearity challenge part 2" width="612" style="display: block; margin: auto;" />
 > > There is little evidence from the plot that the effect of height on weight is different between sexes meaning that an interaction term is not needed. But we could assess the model fit with and without the interaction to check.
 > {: .solution}
 {: .challenge}
@@ -265,7 +265,7 @@ p1 / p2 / p3
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-homoscedasticity example-1.png" title="plot of chunk homoscedasticity example" alt="plot of chunk homoscedasticity example" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-homoscedasticity example-1.png" alt="plot of chunk homoscedasticity example" width="612" style="display: block; margin: auto;" />
 
 
 >## Exercise
@@ -273,13 +273,13 @@ p1 / p2 / p3
 > multiple linear regression model of testosterone as a function of age, 
 > sex and their interaction. The data and their model look as shown below:
 > 
-> <img src="../fig/rmd-04-testosterone challenge interact_plot-1.png" title="plot of chunk testosterone challenge interact_plot" alt="plot of chunk testosterone challenge interact_plot" width="612" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-04-testosterone challenge interact_plot-1.png" alt="plot of chunk testosterone challenge interact_plot" width="612" style="display: block; margin: auto;" />
 > 
 > 
 > This colleague approaches you for your thoughts on the following diagnostic
 > plots, used to assess the homoscedasticity assumption. 
 > 
-> <img src="../fig/rmd-04-diagnostic plots testosterone-1.png" title="plot of chunk diagnostic plots testosterone" alt="plot of chunk diagnostic plots testosterone" width="612" style="display: block; margin: auto;" />
+> <img src="../fig/rmd-04-diagnostic plots testosterone-1.png" alt="plot of chunk diagnostic plots testosterone" width="612" style="display: block; margin: auto;" />
 > 
 > A) What issues can you identify in the diagnostic plots?  
 > B) How could the diagnostic plots be improved to be more informative?
@@ -290,7 +290,7 @@ p1 / p2 / p3
 > > plot for males is much longer than for females.  
 > > B) The points in the scatterplot of age could be coloured by sex to assess
 > > the homoscedasticity assumption at the interaction level:
-> > <img src="../fig/rmd-04-updated diagnostic plot testosterone-1.png" title="plot of chunk updated diagnostic plot testosterone" alt="plot of chunk updated diagnostic plot testosterone" width="612" style="display: block; margin: auto;" />
+> > <img src="../fig/rmd-04-updated diagnostic plot testosterone-1.png" alt="plot of chunk updated diagnostic plot testosterone" width="612" style="display: block; margin: auto;" />
 > > 
 > {: .solution}
 {: .challenge}
