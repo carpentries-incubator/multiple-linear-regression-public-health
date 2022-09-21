@@ -62,6 +62,7 @@ jobs:
         run: |
           packages = setdiff(c('remotes', 'rprojroot', 'renv', 'desc', 'rmarkdown', 'knitr'), rownames(installed.packages()))
           install.packages(packages, repo="https://cran.rstudio.com/")
+          remotes::install_github("https://github.com/jacob-long/jtools")
         shell: Rscript {0}
 
       - name: Query dependencies
